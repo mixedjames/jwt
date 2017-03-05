@@ -23,6 +23,9 @@
 
 namespace jwt {
 
+  /**
+     Window provides the standard window functions
+   */
   struct Window {
 
     virtual ~Window() {}
