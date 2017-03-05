@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\jwt">
+      <UniqueIdentifier>{39732b8b-6633-47aa-9654-c17b47124614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests">
+      <UniqueIdentifier>{ef1584c6-1122-448c-8bfa-54dea9e2c3be}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\jwt\app-window.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\button.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\custom-window.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\custom-window-impl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\defer-create.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\dialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\edit.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\event-types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\jwt.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\libraries.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\list-box.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\measurement.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\message-pump.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\rebar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\scroll-pane.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\status-bar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\toolbar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\window.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\window-impl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\window.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app-window.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\button.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\defer-create.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dialog.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\edit.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\event-types.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\libraries.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\list-box.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\message-pump.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rebar.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scroll-pane.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\status-bar.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\toolbar.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\main.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
