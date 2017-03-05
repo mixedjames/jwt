@@ -24,19 +24,23 @@
 #include "defer-create.hpp"
 #include "event-types.hpp"
 
-struct Rebar
-  : Window
-{
-  Rebar(Window& parent);
+namespace jwt {
 
-  Rebar& AddBand(Window&);
+  struct Rebar
+    : Window
+  {
+    Rebar(Window& parent);
 
-protected:
-  Rebar(const defer_create_t&);
+    Rebar& AddBand(Window&);
 
-  void Create(Window& parent);
+  protected:
+    Rebar(const defer_create_t&);
 
-  LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+    void Create(Window& parent);
 
-private:
-}; 
+    LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+  };
+
+}

@@ -18,6 +18,10 @@
 */
 #include "event-types.hpp"
 
-const CloseTag Close;
-const CommandTag Command;
-const ClickTag Click;
+namespace jwt {
+
+  const CloseTag Close;
+  const CommandTag Command;
+  const ClickTag Click;
+
+} // namespace jwt

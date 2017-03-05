@@ -14,6 +14,7 @@
 #include <memory>
 
 using namespace std;
+using namespace jwt;
 
 void go() {
   INITCOMMONCONTROLSEX icce = {

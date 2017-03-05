@@ -23,46 +23,50 @@
 #include "defer-create.hpp"
 #include "event-types.hpp"
 
-struct Dialog
-  : Window
-{
-  Dialog(int resourceId);
-  Dialog(Window& parent, int resourceId);
-  ~Dialog();
+namespace jwt {
 
-  HWND Item(int id);
+  struct Dialog
+    : Window
+  {
+    Dialog(int resourceId);
+    Dialog(Window& parent, int resourceId);
+    ~Dialog();
 
-  template<typename Callable>
-  auto On(const CloseTag&, Callable c) -> decltype(onClose_.connect(c)) {
-    return onClose_.connect(c);
-  }
+    HWND Item(int id);
 
-  template<typename Callable>
-  auto On(const CommandTag&, Callable c) -> decltype(onCommand_.connect(c)) {
-    return onCommand_.connect(c);
-  }
+    template<typename Callable>
+    auto On(const CloseTag&, Callable c) -> decltype(onClose_.connect(c)) {
+      return onClose_.connect(c);
+    }
 
-  template<typename Callable>
-  auto On(const CommandTag&, int id, Callable c) -> decltype(onCommand_.connect(c)) {
-    return onCommand_.connect([c, id](const CommandEvent& e) {
-      if (e.id == id) {
-        c();
-      }
-    });
-  }
+    template<typename Callable>
+    auto On(const CommandTag&, Callable c) -> decltype(onCommand_.connect(c)) {
+      return onCommand_.connect(c);
+    }
 
-protected:
-  Dialog(const defer_create_t&);
+    template<typename Callable>
+    auto On(const CommandTag&, int id, Callable c) -> decltype(onCommand_.connect(c)) {
+      return onCommand_.connect([c, id](const CommandEvent& e) {
+        if (e.id == id) {
+          c();
+        }
+      });
+    }
 
-  void Create(int resourceId);
-  void Create(Window& parent, int resourceId);
+  protected:
+    Dialog(const defer_create_t&);
 
-  virtual INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
+    void Create(int resourceId);
+    void Create(Window& parent, int resourceId);
 
-private:
-  boost::signals2::signal<void()> onClose_;
-  boost::signals2::signal<void(const CommandEvent&)> onCommand_;
+    virtual INT_PTR DlgProc(HWND, UINT, WPARAM, LPARAM);
 
-  INT_PTR PrivateDlgProc(HWND, UINT, WPARAM, LPARAM);
-  static INT_PTR CALLBACK DlgProcAdapter(HWND, UINT, WPARAM, LPARAM);
-};
+  private:
+    boost::signals2::signal<void()> onClose_;
+    boost::signals2::signal<void(const CommandEvent&)> onCommand_;
+
+    INT_PTR PrivateDlgProc(HWND, UINT, WPARAM, LPARAM);
+    static INT_PTR CALLBACK DlgProcAdapter(HWND, UINT, WPARAM, LPARAM);
+  };
+
+}

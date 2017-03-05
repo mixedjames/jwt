@@ -24,24 +24,28 @@
 #include "defer-create.hpp"
 #include "event-types.hpp"
 
-struct Button
-  : Window
-{
-  Button(Window& parent);
-  Button(Dialog& parent, int buttonId);
+namespace jwt {
 
-  template<typename Callable>
-  auto On(const ClickTag&, Callable c) -> decltype(onClick_.connect(c)) {
-    return onClick_.connect(c);
-  }
+  struct Button
+    : Window
+  {
+    Button(Window& parent);
+    Button(Dialog& parent, int buttonId);
 
-protected:
-  Button(const defer_create_t&);
+    template<typename Callable>
+    auto On(const ClickTag&, Callable c) -> decltype(onClick_.connect(c)) {
+      return onClick_.connect(c);
+    }
 
-  void Create(Window& parent);
+  protected:
+    Button(const defer_create_t&);
 
-  LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+    void Create(Window& parent);
 
-private:
-  boost::signals2::signal<void()> onClick_;
-};
+    LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+    boost::signals2::signal<void()> onClick_;
+  };
+
+}

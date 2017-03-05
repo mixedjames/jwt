@@ -21,41 +21,45 @@
 #include "libraries.hpp"
 #include "measurement.hpp" 
 
-struct Window {
+namespace jwt {
 
-  virtual ~Window() {}
+  struct Window {
 
-  explicit operator HWND() { return hWnd_; }
+    virtual ~Window() {}
 
-  Dimension Size() const;
-  Window& Size(const Dimension&);
+    explicit operator HWND() { return hWnd_; }
 
-  Dimension ClientSize() const;
-  Window& ClientSize(const Dimension&);
+    Dimension Size() const;
+    Window& Size(const Dimension&);
 
-  int Style() const { return GetWindowLong(hWnd_, GWL_STYLE); }
-  int ExStyle() const { return GetWindowLong(hWnd_, GWL_EXSTYLE); }
+    Dimension ClientSize() const;
+    Window& ClientSize(const Dimension&);
 
-  std::wstring Text() const;
-  Window& Text(const std::wstring&);
+    int Style() const { return GetWindowLong(hWnd_, GWL_STYLE); }
+    int ExStyle() const { return GetWindowLong(hWnd_, GWL_EXSTYLE); }
 
-  bool Visible() const;
-  Window& Visible(bool);
+    std::wstring Text() const;
+    Window& Text(const std::wstring&);
 
-  template<typename Callable>
-  Window& ForEachChild(Callable c);
+    bool Visible() const;
+    Window& Visible(bool);
 
-protected:
-  HWND hWnd_;
+    template<typename Callable>
+    Window& ForEachChild(Callable c);
 
-  Window() : hWnd_(nullptr) {}
+  protected:
+    HWND hWnd_;
 
-  static LRESULT ReflectMessage(HWND, UINT, WPARAM, LPARAM);
-  virtual LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+    Window() : hWnd_(nullptr) {}
 
-private:
-  Window(const Window&) = delete;
-  Window& operator= (const Window&) = delete;
-};
+    static LRESULT ReflectMessage(HWND, UINT, WPARAM, LPARAM);
+    virtual LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+    Window(const Window&) = delete;
+    Window& operator= (const Window&) = delete;
+  };
+
+}
 
 #include "window-impl.hpp"

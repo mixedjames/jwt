@@ -18,4 +18,6 @@
 */
 #include "defer-create.hpp"
 
-const defer_create_t defer_create;
+namespace jwt {
+  const defer_create_t defer_create;
+}

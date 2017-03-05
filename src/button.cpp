@@ -20,40 +20,44 @@
 #include "button.hpp"
 #include <assert.h>
 
-Button::Button(Window& parent) {
-  Create(parent);
-}
+namespace jwt {
 
-Button::Button(Dialog& parent, int buttonId) {
-  hWnd_ = parent.Item(buttonId);
-  assert(hWnd_ != nullptr);
-
-  SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
-}
-
-Button::Button(const defer_create_t&) {
-}
-
-void Button::Create(Window& parent) {
-  hWnd_ = CreateWindow(
-    L"BUTTON", L"", WS_VISIBLE | WS_CHILD,
-    0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
-    (HWND) parent, nullptr, nullptr, nullptr
-  );
-  assert(hWnd_ != nullptr);
-
-  SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
-}
-
-LRESULT Button::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
-  switch (m) {
-  case WM_COMMAND:
-    if (HIWORD(w) == BN_CLICKED) {
-      onClick_();
-      return 0;
-    }
-    break;
+  Button::Button(Window& parent) {
+    Create(parent);
   }
 
-  return 0;
-}
+  Button::Button(Dialog& parent, int buttonId) {
+    hWnd_ = parent.Item(buttonId);
+    assert(hWnd_ != nullptr);
+
+    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+  }
+
+  Button::Button(const defer_create_t&) {
+  }
+
+  void Button::Create(Window& parent) {
+    hWnd_ = CreateWindow(
+      L"BUTTON", L"", WS_VISIBLE | WS_CHILD,
+      0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
+      (HWND)parent, nullptr, nullptr, nullptr
+    );
+    assert(hWnd_ != nullptr);
+
+    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+  }
+
+  LRESULT Button::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
+    switch (m) {
+    case WM_COMMAND:
+      if (HIWORD(w) == BN_CLICKED) {
+        onClick_();
+        return 0;
+      }
+      break;
+    }
+
+    return 0;
+  }
+
+} // namespace jwt

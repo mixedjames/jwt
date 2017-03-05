@@ -18,24 +18,28 @@
 */
 #pragma once
 
-template<typename Callable>
-Window& Window::ForEachChild(Callable c) {
-  struct Callback {
-    Callable callback;
-    HWND parent;
+namespace jwt {
 
-    Callback(Callable c, HWND h) : callback(c), parent(h) {}
-  } callback(c, hWnd_);
+  template<typename Callable>
+  Window& Window::ForEachChild(Callable c) {
+    struct Callback {
+      Callable callback;
+      HWND parent;
 
-  WNDENUMPROC ep = [](HWND h, LPARAM l) {
-    Callback* callback = (Callback*)l;
+      Callback(Callable c, HWND h) : callback(c), parent(h) {}
+    } callback(c, hWnd_);
 
-    if (GetAncestor(h, GA_PARENT) == callback->parent) {
-      callback->callback(h);
-    }
-    return TRUE;
-  };
+    WNDENUMPROC ep = [](HWND h, LPARAM l) {
+      Callback* callback = (Callback*)l;
 
-  EnumChildWindows(hWnd_, ep, (LPARAM)&callback);
-  return *this;
+      if (GetAncestor(h, GA_PARENT) == callback->parent) {
+        callback->callback(h);
+      }
+      return TRUE;
+    };
+
+    EnumChildWindows(hWnd_, ep, (LPARAM)&callback);
+    return *this;
+  }
+
 }

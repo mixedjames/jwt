@@ -22,26 +22,30 @@
 #include <assert.h>
 #include "window.hpp"
 
-template<typename UniqueTag>
-struct CustomWindow
-  : Window
-{
-protected:
-  CustomWindow() {}
-  virtual ~CustomWindow();
+namespace jwt {
 
-  static void Register(const wchar_t* clsName);
+  template<typename UniqueTag>
+  struct CustomWindow
+    : Window
+  {
+  protected:
+    CustomWindow() {}
+    virtual ~CustomWindow();
 
-  virtual LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
+    static void Register(const wchar_t* clsName);
 
-private:
-  static ATOM atom_;
+    virtual LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
 
-  CustomWindow(const CustomWindow&) = delete;
-  CustomWindow& operator= (const CustomWindow&) = delete;
+  private:
+    static ATOM atom_;
 
-  static LRESULT CALLBACK WndProcAdapter(HWND, UINT, WPARAM, LPARAM);
-  virtual LRESULT PrivateWndProc(HWND, UINT, WPARAM, LPARAM);
-};
+    CustomWindow(const CustomWindow&) = delete;
+    CustomWindow& operator= (const CustomWindow&) = delete;
+
+    static LRESULT CALLBACK WndProcAdapter(HWND, UINT, WPARAM, LPARAM);
+    virtual LRESULT PrivateWndProc(HWND, UINT, WPARAM, LPARAM);
+  };
+
+}
 
 #include "custom-window-impl.hpp"

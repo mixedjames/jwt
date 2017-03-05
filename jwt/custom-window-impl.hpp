@@ -18,90 +18,94 @@
 */
 #pragma once
 
-template<typename UniqueTag>
-ATOM CustomWindow<UniqueTag>::atom_ = 0;
+namespace jwt {
 
-template<typename UniqueTag>
-CustomWindow<UniqueTag>::~CustomWindow() {
-  if (GetWindowLongPtr(hWnd_, GWL_USERDATA)) {
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) nullptr);
-    DestroyWindow(hWnd_);
-  }
-}
+  template<typename UniqueTag>
+  ATOM CustomWindow<UniqueTag>::atom_ = 0;
 
-template<typename UniqueTag>
-void CustomWindow<UniqueTag>::Register(const wchar_t* clsName) {
-  if (!atom_) {
-    WNDCLASS wc = {};
-    wc.lpszClassName = clsName;
-    wc.lpfnWndProc = WndProcAdapter;
-    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-
-    atom_ = RegisterClass(&wc);
-    assert(atom_ != 0);
-  }
-}
-
-template<typename UniqueTag>
-LRESULT CustomWindow<UniqueTag>::WndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
-  switch (m) {
-  case WM_CLOSE:
-    return 0;
-
-  default:
-    return DefWindowProc(h, m, w, l);
-  }
-}
-
-template<typename UniqueTag>
-LRESULT CALLBACK CustomWindow<UniqueTag>::WndProcAdapter(HWND h, UINT m, WPARAM w, LPARAM l) {
-  CustomWindow<UniqueTag>* wnd;
-
-  if (m == WM_NCCREATE) {
-    CREATESTRUCT* cs = (CREATESTRUCT*)l;
-    wnd = (CustomWindow<UniqueTag>*)cs->lpCreateParams;
-
-    if (!wnd) {
-      wnd = new UniqueTag(defer_create);
+  template<typename UniqueTag>
+  CustomWindow<UniqueTag>::~CustomWindow() {
+    if (GetWindowLongPtr(hWnd_, GWL_USERDATA)) {
+      SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) nullptr);
+      DestroyWindow(hWnd_);
     }
-
-    SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR)wnd);
   }
-  else if (m == WM_DESTROY) {
-    wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWL_USERDATA);
-    if (wnd) {
-      // app != nullptr means that DestroyWindow was called externally
-      // Set GWL_USERDATA to nullptr to make the destructor aware that it doesn't need to
-      // destroy the window itself
-      SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR) nullptr);
-      delete wnd;
+
+  template<typename UniqueTag>
+  void CustomWindow<UniqueTag>::Register(const wchar_t* clsName) {
+    if (!atom_) {
+      WNDCLASS wc = {};
+      wc.lpszClassName = clsName;
+      wc.lpfnWndProc = WndProcAdapter;
+      wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+      wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+      atom_ = RegisterClass(&wc);
+      assert(atom_ != 0);
+    }
+  }
+
+  template<typename UniqueTag>
+  LRESULT CustomWindow<UniqueTag>::WndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
+    switch (m) {
+    case WM_CLOSE:
+      return 0;
+
+    default:
+      return DefWindowProc(h, m, w, l);
+    }
+  }
+
+  template<typename UniqueTag>
+  LRESULT CALLBACK CustomWindow<UniqueTag>::WndProcAdapter(HWND h, UINT m, WPARAM w, LPARAM l) {
+    CustomWindow<UniqueTag>* wnd;
+
+    if (m == WM_NCCREATE) {
+      CREATESTRUCT* cs = (CREATESTRUCT*)l;
+      wnd = (CustomWindow<UniqueTag>*)cs->lpCreateParams;
+
+      if (!wnd) {
+        wnd = new UniqueTag(defer_create);
+      }
+
+      SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR)wnd);
+    }
+    else if (m == WM_DESTROY) {
+      wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWL_USERDATA);
+      if (wnd) {
+        // app != nullptr means that DestroyWindow was called externally
+        // Set GWL_USERDATA to nullptr to make the destructor aware that it doesn't need to
+        // destroy the window itself
+        SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR) nullptr);
+        delete wnd;
+      }
+      else {
+        // app == nullptr means that this message was triggered from the destructor
+        // Nothing to do in this case
+      }
+      return DefWindowProc(h, m, w, l);
     }
     else {
-      // app == nullptr means that this message was triggered from the destructor
-      // Nothing to do in this case
+      wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWL_USERDATA);
     }
-    return DefWindowProc(h, m, w, l);
-  }
-  else {
-    wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWL_USERDATA);
-  }
 
-  if (wnd) {
-    return wnd->PrivateWndProc(h, m, w, l);
-  }
-  else {
-    return DefWindowProc(h, m, w, l);
+    if (wnd) {
+      return wnd->PrivateWndProc(h, m, w, l);
+    }
+    else {
+      return DefWindowProc(h, m, w, l);
+    }
+
   }
 
-}
 
+  template<typename UniqueTag>
+  LRESULT CustomWindow<UniqueTag>::PrivateWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
+    if (m == WM_NCCREATE) {
+      hWnd_ = h;
+    }
 
-template<typename UniqueTag>
-LRESULT CustomWindow<UniqueTag>::PrivateWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
-  if (m == WM_NCCREATE) {
-    hWnd_ = h;
+    return WndProc(h, m, w, l);
   }
 
-  return WndProc(h, m, w, l);
 }

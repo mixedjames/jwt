@@ -24,27 +24,31 @@
 #include "defer-create.hpp"
 #include "event-types.hpp"
 
-struct ListBox
-  : Window
-{
-  ListBox(Window& parent);
-  ListBox(Dialog& parent, int buttonId);
+namespace jwt {
 
-  ListBox& Add(const std::wstring&);
-  ListBox& Insert(int index, const std::wstring&);
-  ListBox& Delete(int index);
+  struct ListBox
+    : Window
+  {
+    ListBox(Window& parent);
+    ListBox(Dialog& parent, int buttonId);
 
-  int Count() const;
+    ListBox& Add(const std::wstring&);
+    ListBox& Insert(int index, const std::wstring&);
+    ListBox& Delete(int index);
 
-  int SelectedIndex() const;
-  std::vector<int> SelectedIndices() const;
+    int Count() const;
 
-protected:
-  ListBox(const defer_create_t&);
+    int SelectedIndex() const;
+    std::vector<int> SelectedIndices() const;
 
-  void Create(Window& parent);
+  protected:
+    ListBox(const defer_create_t&);
 
-  LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+    void Create(Window& parent);
 
-private:
-};
+    LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+  };
+
+}

@@ -22,93 +22,97 @@
 #include <memory>
 #include <algorithm>
 
-std::unique_ptr<MessagePump> defaultPump_ = nullptr;
+namespace jwt {
 
-MessagePump::MessagePump()
-  : dlgOrAccelChanged_(false)
-{
-}
+  std::unique_ptr<MessagePump> defaultPump_ = nullptr;
 
-int MessagePump::Pump() {
-  MSG m;
+  MessagePump::MessagePump()
+    : dlgOrAccelChanged_(false)
+  {
+  }
 
-  while (GetMessage(&m, nullptr, 0, 0)) {
-    bool msgHandled = false;
+  int MessagePump::Pump() {
+    MSG m;
 
-    size_t l = dialogs_.size();
-    for (size_t i = 0; i < l; ++i) {
-      HWND d = dialogs_[i];
-      if (d && IsDialogMessage(d, &m)) {
-        msgHandled = true;
-        break;
-      }
-    }
+    while (GetMessage(&m, nullptr, 0, 0)) {
+      bool msgHandled = false;
 
-    if (!msgHandled) {
-      l = accelerators_.size();
+      size_t l = dialogs_.size();
       for (size_t i = 0; i < l; ++i) {
-        HACCEL a = accelerators_[i];
-        if (a && TranslateAccelerator(m.hwnd, a, &m)) {
+        HWND d = dialogs_[i];
+        if (d && IsDialogMessage(d, &m)) {
           msgHandled = true;
           break;
         }
       }
+
+      if (!msgHandled) {
+        l = accelerators_.size();
+        for (size_t i = 0; i < l; ++i) {
+          HACCEL a = accelerators_[i];
+          if (a && TranslateAccelerator(m.hwnd, a, &m)) {
+            msgHandled = true;
+            break;
+          }
+        }
+      }
+
+      if (!msgHandled) {
+        TranslateMessage(&m);
+        DispatchMessage(&m);
+      }
+
+      if (dlgOrAccelChanged_) {
+        dialogs_.erase(
+          remove(begin(dialogs_), end(dialogs_), nullptr),
+          end(dialogs_)
+        );
+
+        accelerators_.erase(
+          remove(begin(accelerators_), end(accelerators_), nullptr),
+          end(accelerators_)
+        );
+
+        dlgOrAccelChanged_ = false;
+      }
     }
+    return m.wParam;
+  }
 
-    if (!msgHandled) {
-      TranslateMessage(&m);
-      DispatchMessage(&m);
+  void MessagePump::AddDialog(HWND h) {
+    dialogs_.push_back(h);
+    dlgOrAccelChanged_ = true;
+  }
+
+  void MessagePump::RemoveDialog(HWND h) {
+    auto i = std::find(begin(dialogs_), end(dialogs_), h);
+
+    if (i != dialogs_.end()) {
+      *i = nullptr;
     }
+    dlgOrAccelChanged_ = true;
+  }
 
-    if (dlgOrAccelChanged_) {
-      dialogs_.erase(
-        remove(begin(dialogs_), end(dialogs_), nullptr),
-        end(dialogs_)
-      );
+  void MessagePump::AddAccelerator(HACCEL h) {
+    accelerators_.push_back(h);
+    dlgOrAccelChanged_ = true;
+  }
 
-      accelerators_.erase(
-        remove(begin(accelerators_), end(accelerators_), nullptr),
-        end(accelerators_)
-      );
+  void MessagePump::RemoveAccelerator(HACCEL h) {
+    auto i = std::find(begin(accelerators_), end(accelerators_), h);
 
-      dlgOrAccelChanged_ = false;
+    if (i != accelerators_.end()) {
+      *i = nullptr;
     }
+    dlgOrAccelChanged_ = true;
   }
-  return m.wParam;
-}
 
-void MessagePump::AddDialog(HWND h) {
-  dialogs_.push_back(h);
-  dlgOrAccelChanged_ = true;
-}
 
-void MessagePump::RemoveDialog(HWND h) {
-  auto i = std::find(begin(dialogs_), end(dialogs_), h);
-
-  if (i != dialogs_.end()) {
-    *i = nullptr;
+  MessagePump& DefaultPump() {
+    if (!defaultPump_) {
+      defaultPump_ = std::unique_ptr<MessagePump>(new MessagePump);
+    }
+    return *defaultPump_;
   }
-  dlgOrAccelChanged_ = true;
-}
 
-void MessagePump::AddAccelerator(HACCEL h) {
-  accelerators_.push_back(h);
-  dlgOrAccelChanged_ = true;
-}
-
-void MessagePump::RemoveAccelerator(HACCEL h) {
-  auto i = std::find(begin(accelerators_), end(accelerators_), h);
-
-  if (i != accelerators_.end()) {
-    *i = nullptr;
-  }
-  dlgOrAccelChanged_ = true;
-}
-
-
-MessagePump& DefaultPump() {
-  if (!defaultPump_) {
-    defaultPump_ = std::unique_ptr<MessagePump>(new MessagePump);
-  }
-  return *defaultPump_;
-}
+} // namespace jwt

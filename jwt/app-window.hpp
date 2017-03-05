@@ -22,57 +22,61 @@
 #include "custom-window.hpp"
 #include "event-types.hpp"
 
-struct AppWindow
-  : CustomWindow<AppWindow>
-{
-  friend struct CustomWindow<AppWindow>;
-  static const wchar_t* CLASS_NAME;
+namespace jwt {
 
-  static void Register();
+  struct AppWindow
+    : CustomWindow<AppWindow>
+  {
+    friend struct CustomWindow<AppWindow>;
+    static const wchar_t* CLASS_NAME;
 
-  AppWindow();
+    static void Register();
 
-  template<typename Callable>
-  auto On(const CloseTag&, Callable c) -> decltype(onClose_.connect(c)) {
-    return onClose_.connect(c);
-  }
+    AppWindow();
 
-  template<typename Callable>
-  auto On(const CommandTag&, Callable c) -> decltype(onCommand_.connect(c)) {
-    return onCommand_.connect(c);
-  }
+    template<typename Callable>
+    auto On(const CloseTag&, Callable c) -> decltype(onClose_.connect(c)) {
+      return onClose_.connect(c);
+    }
 
-  template<typename Callable>
-  auto On(const CommandTag&, int id, Callable c) -> decltype(onCommand_.connect(c)) {
-    return onCommand_.connect([c, id](const CommandEvent& e) {
-      if (e.id == id) {
-        c();
-      }
-    });
-  }
+    template<typename Callable>
+    auto On(const CommandTag&, Callable c) -> decltype(onCommand_.connect(c)) {
+      return onCommand_.connect(c);
+    }
 
-  template<typename Callable>
-  void SizePolicy(Callable c) {
-    sizePolicy_ = c;
-  }
+    template<typename Callable>
+    auto On(const CommandTag&, int id, Callable c) -> decltype(onCommand_.connect(c)) {
+      return onCommand_.connect([c, id](const CommandEvent& e) {
+        if (e.id == id) {
+          c();
+        }
+      });
+    }
 
-  template<typename Callable>
-  void LayoutPolicy(Callable c) {
-    layoutPolicy_ = c;
-  }
+    template<typename Callable>
+    void SizePolicy(Callable c) {
+      sizePolicy_ = c;
+    }
 
-  AppWindow& Menu(UINT resource);
+    template<typename Callable>
+    void LayoutPolicy(Callable c) {
+      layoutPolicy_ = c;
+    }
 
-protected:
-  AppWindow(const defer_create_t&);
+    AppWindow& Menu(UINT resource);
 
-  void Create();
+  protected:
+    AppWindow(const defer_create_t&);
 
-  LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
+    void Create();
 
-private:
-  boost::signals2::signal<void()> onClose_;
-  boost::signals2::signal<void(const CommandEvent&)> onCommand_;
-  std::function<void(unsigned int edge, Rect&)> sizePolicy_;
-  std::function<void()> layoutPolicy_;
-};
+    LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+    boost::signals2::signal<void()> onClose_;
+    boost::signals2::signal<void(const CommandEvent&)> onCommand_;
+    std::function<void(unsigned int edge, Rect&)> sizePolicy_;
+    std::function<void()> layoutPolicy_;
+  };
+
+}

@@ -20,29 +20,32 @@
 
 #include "libraries.hpp"
 
-typedef boost::signals2::scoped_connection Connection;
+namespace jwt {
+  typedef boost::signals2::scoped_connection Connection;
 
-struct CloseTag {
-};
-extern const CloseTag Close;
+  struct CloseTag {
+  };
+  extern const CloseTag Close;
 
-struct CommandTag {
-};
-extern const CommandTag Command;
+  struct CommandTag {
+  };
+  extern const CommandTag Command;
 
-struct CommandEvent {
-  enum Type {
-    MENU = 1, ACCELERATOR, CONTROL
-  } type;
+  struct CommandEvent {
+    enum Type {
+      MENU = 1, ACCELERATOR, CONTROL
+    } type;
 
-  unsigned int id;
-  LPARAM lParam;
+    unsigned int id;
+    LPARAM lParam;
 
-  CommandEvent(Type t, unsigned int id, LPARAM l)
-    : type(t), id(id), lParam(l)
-  {}
-};
+    CommandEvent(Type t, unsigned int id, LPARAM l)
+      : type(t), id(id), lParam(l)
+    {}
+  };
 
-struct ClickTag {
-};
-extern const ClickTag Click;
+  struct ClickTag {
+  };
+  extern const ClickTag Click;
+
+}

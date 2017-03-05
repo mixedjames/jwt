@@ -18,6 +18,10 @@
 */
 #pragma once
 
-struct defer_create_t {};
+namespace jwt {
 
-extern const defer_create_t defer_create;
+  struct defer_create_t {};
+
+  extern const defer_create_t defer_create;
+
+}

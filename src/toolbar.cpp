@@ -20,82 +20,86 @@
 #include "libraries.hpp"
 #include "toolbar.hpp"
 
-Toolbar::Toolbar(Window& parent) {
-  Create(parent);
-}
+namespace jwt {
 
-Toolbar::Toolbar(const defer_create_t&) {
-}
+  Toolbar::Toolbar(Window& parent) {
+    Create(parent);
+  }
 
-int Toolbar::AddStandardBitmap(UINT id) {
-  TBADDBITMAP addBmp = {
-    HINST_COMMCTRL,
-    id
-  };
+  Toolbar::Toolbar(const defer_create_t&) {
+  }
 
-  int index = SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
-  assert(index != -1);
+  int Toolbar::AddStandardBitmap(UINT id) {
+    TBADDBITMAP addBmp = {
+      HINST_COMMCTRL,
+      id
+    };
 
-  return index;
-}
+    int index = SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
+    assert(index != -1);
 
-int Toolbar::AddBitmapResource(UINT id) {
-  TBADDBITMAP addBmp = {
-    GetModuleHandle(nullptr),
-    id
-  };
+    return index;
+  }
 
-  int index = SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
-  assert(index != -1);
+  int Toolbar::AddBitmapResource(UINT id) {
+    TBADDBITMAP addBmp = {
+      GetModuleHandle(nullptr),
+      id
+    };
 
-  return index;
-}
+    int index = SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
+    assert(index != -1);
+
+    return index;
+  }
 
 
-Toolbar& Toolbar::AddButton(int baseImgIndex, int subImgIndex, int id, const std::wstring& label) {
-  TBBUTTON b = {
-    MAKELONG(subImgIndex, baseImgIndex),
-    id,
-    TBSTATE_ENABLED,
-    BTNS_AUTOSIZE, 
-    { 0 }, 0,
-    (INT_PTR) label.c_str()
-  };
+  Toolbar& Toolbar::AddButton(int baseImgIndex, int subImgIndex, int id, const std::wstring& label) {
+    TBBUTTON b = {
+      MAKELONG(subImgIndex, baseImgIndex),
+      id,
+      TBSTATE_ENABLED,
+      BTNS_AUTOSIZE,
+      { 0 }, 0,
+      (INT_PTR)label.c_str()
+    };
 
-  SendMessage(hWnd_, TB_ADDBUTTONS, 1, (LPARAM) &b);
+    SendMessage(hWnd_, TB_ADDBUTTONS, 1, (LPARAM)&b);
 
-  return *this;
-}
+    return *this;
+  }
 
-Toolbar& Toolbar::AddSeparator() {
-  TBBUTTON b = {
-    MAKELONG(0, 0),
-    NULL,
-    0,
-    TBSTYLE_SEP,
-    {},
-    0,
-    (INT_PTR)L""
-  };
-  SendMessage(hWnd_, TB_ADDBUTTONS, 1, (LPARAM) &b);
+  Toolbar& Toolbar::AddSeparator() {
+    TBBUTTON b = {
+      MAKELONG(0, 0),
+      NULL,
+      0,
+      TBSTYLE_SEP,
+      {},
+      0,
+      (INT_PTR)L""
+    };
+    SendMessage(hWnd_, TB_ADDBUTTONS, 1, (LPARAM)&b);
 
-  return *this;
-}
+    return *this;
+  }
 
-Toolbar& Toolbar::Autosize() {
-  SendMessage(hWnd_, TB_AUTOSIZE, 0, 0);
-  return *this;
-}
+  Toolbar& Toolbar::Autosize() {
+    SendMessage(hWnd_, TB_AUTOSIZE, 0, 0);
+    return *this;
+  }
 
-void Toolbar::Create(Window& parent) {
-  hWnd_ = CreateWindowEx(0, TOOLBARCLASSNAME, 0,
-    TBSTYLE_FLAT | CCS_ADJUSTABLE | CCS_NODIVIDER | WS_CHILD | WS_VISIBLE | CCS_NOPARENTALIGN | CCS_NORESIZE,
-    0, 0, 0, 0,
-    (HWND) parent, (HMENU)0, GetModuleHandle(nullptr), 0);
+  void Toolbar::Create(Window& parent) {
+    hWnd_ = CreateWindowEx(0, TOOLBARCLASSNAME, 0,
+      TBSTYLE_FLAT | CCS_ADJUSTABLE | CCS_NODIVIDER | WS_CHILD | WS_VISIBLE | CCS_NOPARENTALIGN | CCS_NORESIZE,
+      0, 0, 0, 0,
+      (HWND)parent, (HMENU)0, GetModuleHandle(nullptr), 0);
 
-  SendMessage(hWnd_, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
-}
+    SendMessage(hWnd_, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+  }
 
-LRESULT Toolbar::HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM) {
-  return 0;
-}
+  LRESULT Toolbar::HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM) {
+    return 0;
+  }
+
+} // namespace jwt

@@ -20,25 +20,27 @@
 
 #include "libraries.hpp"
 
-struct MessagePump {
+namespace jwt {
+  struct MessagePump {
 
-  MessagePump();
+    MessagePump();
 
-  int Pump();
+    int Pump();
 
-  void AddDialog(HWND);
-  void RemoveDialog(HWND);
+    void AddDialog(HWND);
+    void RemoveDialog(HWND);
 
-  void AddAccelerator(HACCEL);
-  void RemoveAccelerator(HACCEL);
+    void AddAccelerator(HACCEL);
+    void RemoveAccelerator(HACCEL);
 
-private:
-  MessagePump(const MessagePump&) = delete;
-  MessagePump& operator= (const MessagePump&) = delete;
+  private:
+    MessagePump(const MessagePump&) = delete;
+    MessagePump& operator= (const MessagePump&) = delete;
 
-  bool dlgOrAccelChanged_;
-  std::vector<HWND> dialogs_;
-  std::vector<HACCEL> accelerators_;
-};
+    bool dlgOrAccelChanged_;
+    std::vector<HWND> dialogs_;
+    std::vector<HACCEL> accelerators_;
+  };
 
-MessagePump& DefaultPump();
+  MessagePump& DefaultPump();
+}

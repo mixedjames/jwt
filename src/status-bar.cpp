@@ -21,36 +21,40 @@
 #include "status-bar.hpp"
 #include <assert.h>
 
-StatusBar::StatusBar(Window& parent) {
-  Create(parent);
-}
+namespace jwt {
 
-StatusBar::StatusBar(Dialog& parent, int statusbarId) {
-  hWnd_ = parent.Item(statusbarId);
-  assert(hWnd_ != nullptr);
-
-  SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
-}
-
-StatusBar::StatusBar(const defer_create_t&) {
-}
-
-void StatusBar::Create(Window& parent) {
-  hWnd_ = CreateWindow(
-    STATUSCLASSNAME, L"Test", WS_VISIBLE | WS_CHILD | SBARS_SIZEGRIP,
-    0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
-    (HWND)parent, nullptr, nullptr, nullptr
-  );
-  assert(hWnd_ != nullptr);
-
-  SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
-}
-
-LRESULT StatusBar::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
-  switch (m) {
-  case WM_COMMAND:
-    break;
+  StatusBar::StatusBar(Window& parent) {
+    Create(parent);
   }
 
-  return 0;
-}
+  StatusBar::StatusBar(Dialog& parent, int statusbarId) {
+    hWnd_ = parent.Item(statusbarId);
+    assert(hWnd_ != nullptr);
+
+    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+  }
+
+  StatusBar::StatusBar(const defer_create_t&) {
+  }
+
+  void StatusBar::Create(Window& parent) {
+    hWnd_ = CreateWindow(
+      STATUSCLASSNAME, L"Test", WS_VISIBLE | WS_CHILD | SBARS_SIZEGRIP,
+      0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
+      (HWND)parent, nullptr, nullptr, nullptr
+    );
+    assert(hWnd_ != nullptr);
+
+    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+  }
+
+  LRESULT StatusBar::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
+    switch (m) {
+    case WM_COMMAND:
+      break;
+    }
+
+    return 0;
+  }
+
+} // namespace jwt

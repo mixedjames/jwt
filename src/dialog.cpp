@@ -20,53 +20,55 @@
 #include "dialog.hpp"
 #include "message-pump.hpp"
 
-Dialog::Dialog(int resourceId) {
-  Create(resourceId);
-}
+namespace jwt {
 
-Dialog::Dialog(Window& parent, int resourceId) {
-  Create(parent, resourceId);
-}
-
-Dialog::Dialog(const defer_create_t&) {
-}
-
-Dialog::~Dialog() {
-  if (hWnd_ && GetWindowLongPtr(hWnd_, GWL_USERDATA)) {
-    DefaultPump().RemoveDialog(hWnd_);
-    DestroyWindow(hWnd_);
+  Dialog::Dialog(int resourceId) {
+    Create(resourceId);
   }
-}
 
-HWND Dialog::Item(int id) {
-  return GetDlgItem(hWnd_, id);
-}
+  Dialog::Dialog(Window& parent, int resourceId) {
+    Create(parent, resourceId);
+  }
 
-void Dialog::Create(int resourceId) {
-  CreateDialogParam(
-    GetModuleHandle(nullptr),
-    MAKEINTRESOURCE(resourceId),
-    nullptr,
-    DlgProcAdapter,
-    (LPARAM) this
-  );
-  DefaultPump().AddDialog(hWnd_);
-}
+  Dialog::Dialog(const defer_create_t&) {
+  }
 
-void Dialog::Create(Window& parent, int resourceId) {
-  CreateDialogParam(
-    GetModuleHandle(nullptr),
-    MAKEINTRESOURCE(resourceId),
-    (HWND) parent,
-    DlgProcAdapter,
-    (LPARAM) this
-  );
-  DefaultPump().AddDialog(hWnd_);
-}
+  Dialog::~Dialog() {
+    if (hWnd_ && GetWindowLongPtr(hWnd_, GWL_USERDATA)) {
+      DefaultPump().RemoveDialog(hWnd_);
+      DestroyWindow(hWnd_);
+    }
+  }
 
-INT_PTR Dialog::DlgProc(HWND h, UINT m, WPARAM w, LPARAM l) {
-  switch (m) {
-  case WM_COMMAND: {
+  HWND Dialog::Item(int id) {
+    return GetDlgItem(hWnd_, id);
+  }
+
+  void Dialog::Create(int resourceId) {
+    CreateDialogParam(
+      GetModuleHandle(nullptr),
+      MAKEINTRESOURCE(resourceId),
+      nullptr,
+      DlgProcAdapter,
+      (LPARAM) this
+    );
+    DefaultPump().AddDialog(hWnd_);
+  }
+
+  void Dialog::Create(Window& parent, int resourceId) {
+    CreateDialogParam(
+      GetModuleHandle(nullptr),
+      MAKEINTRESOURCE(resourceId),
+      (HWND)parent,
+      DlgProcAdapter,
+      (LPARAM) this
+    );
+    DefaultPump().AddDialog(hWnd_);
+  }
+
+  INT_PTR Dialog::DlgProc(HWND h, UINT m, WPARAM w, LPARAM l) {
+    switch (m) {
+    case WM_COMMAND: {
       CommandEvent::Type t = (HIWORD(w) == 0)
         ? CommandEvent::MENU
         : (HIWORD(w) == 1)
@@ -79,45 +81,46 @@ INT_PTR Dialog::DlgProc(HWND h, UINT m, WPARAM w, LPARAM l) {
         ReflectMessage(h, m, w, l);
       }
     }
-    break;
+                     break;
 
-  case WM_NOTIFY:
-  case WM_HSCROLL:
-  case WM_VSCROLL:
-    ReflectMessage(h, m, w, l);
-    return TRUE;
+    case WM_NOTIFY:
+    case WM_HSCROLL:
+    case WM_VSCROLL:
+      ReflectMessage(h, m, w, l);
+      return TRUE;
 
-  case WM_CLOSE:
-    onClose_();
-    return TRUE;
-  }
-  
-  return FALSE;
-}
+    case WM_CLOSE:
+      onClose_();
+      return TRUE;
+    }
 
-INT_PTR Dialog::PrivateDlgProc(HWND h, UINT m, WPARAM w, LPARAM l) {
-  if (m == WM_INITDIALOG) {
-    hWnd_ = h;
-  }
-
-  return DlgProc(h, m, w, l);
-}
-
-INT_PTR CALLBACK Dialog::DlgProcAdapter(HWND h, UINT m, WPARAM w, LPARAM l) {
-  Dialog* dlg;
-
-  if (m == WM_INITDIALOG) {
-    dlg = (Dialog*) l;
-    SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR) dlg);
-  }
-  else {
-    dlg = (Dialog*)GetWindowLongPtr(h, GWL_USERDATA);
-  }
-
-  if (dlg) {
-    return dlg->PrivateDlgProc(h, m, w, l);
-  }
-  else {
     return FALSE;
   }
-}
+
+  INT_PTR Dialog::PrivateDlgProc(HWND h, UINT m, WPARAM w, LPARAM l) {
+    if (m == WM_INITDIALOG) {
+      hWnd_ = h;
+    }
+
+    return DlgProc(h, m, w, l);
+  }
+
+  INT_PTR CALLBACK Dialog::DlgProcAdapter(HWND h, UINT m, WPARAM w, LPARAM l) {
+    Dialog* dlg;
+
+    if (m == WM_INITDIALOG) {
+      dlg = (Dialog*)l;
+      SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR)dlg);
+    }
+    else {
+      dlg = (Dialog*)GetWindowLongPtr(h, GWL_USERDATA);
+    }
+
+    if (dlg) {
+      return dlg->PrivateDlgProc(h, m, w, l);
+    }
+    else {
+      return FALSE;
+    }
+  }
+} // namespace jwt

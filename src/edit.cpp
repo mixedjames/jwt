@@ -20,36 +20,40 @@
 #include "edit.hpp"
 #include <assert.h>
 
-Edit::Edit(Window& parent) {
-  Create(parent);
-}
+namespace jwt {
 
-Edit::Edit(Dialog& parent, int editId) {
-  hWnd_ = parent.Item(editId);
-  assert(hWnd_ != nullptr);
-
-  SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
-}
-
-Edit::Edit(const defer_create_t&) {
-}
-
-void Edit::Create(Window& parent) {
-  hWnd_ = CreateWindow(
-    L"EDIT", L"", WS_VISIBLE | WS_CHILD,
-    0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
-    (HWND)parent, nullptr, nullptr, nullptr
-  );
-  assert(hWnd_ != nullptr);
-
-  SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
-}
-
-LRESULT Edit::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
-  switch (m) {
-  case WM_COMMAND:
-    break;
+  Edit::Edit(Window& parent) {
+    Create(parent);
   }
 
-  return 0;
-}
+  Edit::Edit(Dialog& parent, int editId) {
+    hWnd_ = parent.Item(editId);
+    assert(hWnd_ != nullptr);
+
+    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+  }
+
+  Edit::Edit(const defer_create_t&) {
+  }
+
+  void Edit::Create(Window& parent) {
+    hWnd_ = CreateWindow(
+      L"EDIT", L"", WS_VISIBLE | WS_CHILD,
+      0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
+      (HWND)parent, nullptr, nullptr, nullptr
+    );
+    assert(hWnd_ != nullptr);
+
+    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+  }
+
+  LRESULT Edit::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
+    switch (m) {
+    case WM_COMMAND:
+      break;
+    }
+
+    return 0;
+  }
+
+} // namespace jwt

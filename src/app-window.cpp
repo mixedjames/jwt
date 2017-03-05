@@ -22,53 +22,55 @@
 #include <assert.h>
 #include <iostream>
 
-using std::cout;
+namespace jwt {
 
-const wchar_t* AppWindow::CLASS_NAME = L"AppWindow::CLASS_NAME";
+  using std::cout;
 
-void AppWindow::Register() {
-  CustomWindow<AppWindow>::Register(CLASS_NAME);
-}
+  const wchar_t* AppWindow::CLASS_NAME = L"AppWindow::CLASS_NAME";
 
-AppWindow::AppWindow()
-{
-  Create();
-}
+  void AppWindow::Register() {
+    CustomWindow<AppWindow>::Register(CLASS_NAME);
+  }
 
-AppWindow::AppWindow(const defer_create_t&)
-{
-}
+  AppWindow::AppWindow()
+  {
+    Create();
+  }
 
-void AppWindow::Create() {
-  Register();
-  CreateWindow(
-    CLASS_NAME, L"",
-    WS_POPUP | WS_OVERLAPPEDWINDOW,
-    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-    nullptr, nullptr, GetModuleHandle(nullptr), (void*) this
-  );
+  AppWindow::AppWindow(const defer_create_t&)
+  {
+  }
 
-  assert(hWnd_ != nullptr);
-}
+  void AppWindow::Create() {
+    Register();
+    CreateWindow(
+      CLASS_NAME, L"",
+      WS_POPUP | WS_OVERLAPPEDWINDOW,
+      CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+      nullptr, nullptr, GetModuleHandle(nullptr), (void*) this
+    );
 
-LRESULT AppWindow::WndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
-  switch (m) {
-  case WM_CLOSE:
-    onClose_();
-    break;
+    assert(hWnd_ != nullptr);
+  }
 
-  case WM_NOTIFY:
-  case WM_HSCROLL:
-  case WM_VSCROLL:
-    ReflectMessage(h, m, w, l);
-    break;
+  LRESULT AppWindow::WndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
+    switch (m) {
+    case WM_CLOSE:
+      onClose_();
+      break;
 
-  case WM_COMMAND: {
+    case WM_NOTIFY:
+    case WM_HSCROLL:
+    case WM_VSCROLL:
+      ReflectMessage(h, m, w, l);
+      break;
+
+    case WM_COMMAND: {
       CommandEvent::Type t = (HIWORD(w) == 0)
         ? CommandEvent::MENU
         : (HIWORD(w) == 1)
-          ? CommandEvent::ACCELERATOR
-          : CommandEvent::CONTROL;
+        ? CommandEvent::ACCELERATOR
+        : CommandEvent::CONTROL;
 
       onCommand_(CommandEvent(t, LOWORD(w), l));
 
@@ -76,33 +78,35 @@ LRESULT AppWindow::WndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
         ReflectMessage(h, m, w, l);
       }
     }
-    break;
+                     break;
 
-  case WM_SIZE:
-    if (layoutPolicy_) {
-      layoutPolicy_();
+    case WM_SIZE:
+      if (layoutPolicy_) {
+        layoutPolicy_();
+      }
+      break;
+
+    case WM_SIZING:
+      if (sizePolicy_) {
+        RECT* r = (RECT*)l;
+        Rect r2(*r);
+
+        sizePolicy_(w, r2);
+
+        *r = (RECT)r2;
+      }
+      break;
     }
-    break;
 
-  case WM_SIZING:
-    if (sizePolicy_) {
-      RECT* r = (RECT*)l;
-      Rect r2(*r);
-
-      sizePolicy_(w, r2);
-
-      *r = (RECT) r2;
-    }
-    break;
+    return CustomWindow<AppWindow>::WndProc(h, m, w, l);
   }
 
-  return CustomWindow<AppWindow>::WndProc(h, m, w, l);
-}
+  AppWindow& AppWindow::Menu(UINT resource) {
+    HMENU m = LoadMenu(GetModuleHandle(nullptr), MAKEINTRESOURCE(resource));
+    assert(m);
 
-AppWindow& AppWindow::Menu(UINT resource) {
-  HMENU m = LoadMenu(GetModuleHandle(nullptr), MAKEINTRESOURCE(resource));
-  assert(m);
+    SetMenu(hWnd_, m);
+    return *this;
+  }
 
-  SetMenu(hWnd_, m);
-  return *this;
-}
+} // namespace jwt

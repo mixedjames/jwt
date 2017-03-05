@@ -24,23 +24,27 @@
 #include "defer-create.hpp"
 #include "event-types.hpp"
 
-struct Toolbar
-  : Window
-{
-  Toolbar(Window& parent);
+namespace jwt {
 
-  int AddStandardBitmap(UINT id);
-  int AddBitmapResource(UINT id);
+  struct Toolbar
+    : Window
+  {
+    Toolbar(Window& parent);
 
-  Toolbar& AddButton(int baseImgIndex, int subImgIndex, int id, const std::wstring& label);
-  Toolbar& AddSeparator();
+    int AddStandardBitmap(UINT id);
+    int AddBitmapResource(UINT id);
 
-  Toolbar& Autosize();
+    Toolbar& AddButton(int baseImgIndex, int subImgIndex, int id, const std::wstring& label);
+    Toolbar& AddSeparator();
 
-protected:
-  Toolbar(const defer_create_t&);
+    Toolbar& Autosize();
 
-  void Create(Window& parent);
+  protected:
+    Toolbar(const defer_create_t&);
 
-  LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
-};
+    void Create(Window& parent);
+
+    LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+  };
+
+}

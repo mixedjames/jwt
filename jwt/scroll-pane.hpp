@@ -21,41 +21,45 @@
 #include "custom-window.hpp"
 #include "defer-create.hpp"
 
-struct ScrollPane
-  : CustomWindow<ScrollPane>
-{
-  friend struct CustomWindow<ScrollPane>;
-  static const wchar_t* CLASS_NAME;
+namespace jwt {
 
-  static void Register();
+  struct ScrollPane
+    : CustomWindow<ScrollPane>
+  {
+    friend struct CustomWindow<ScrollPane>;
+    static const wchar_t* CLASS_NAME;
 
-  explicit ScrollPane(Window& parent);
+    static void Register();
 
-  ScrollPane& CalculateScrollableExtent();
-  const Point& Position() const { return position_; }
-  const Dimension& Extent() const { return extent_; }
+    explicit ScrollPane(Window& parent);
 
-  bool AlwaysOn() const { return !!(flags_ & ALWAYS_ON); }
-  ScrollPane& AlwaysOn(bool b);
+    ScrollPane& CalculateScrollableExtent();
+    const Point& Position() const { return position_; }
+    const Dimension& Extent() const { return extent_; }
 
-protected:
-  explicit ScrollPane(const defer_create_t&);
+    bool AlwaysOn() const { return !!(flags_ & ALWAYS_ON); }
+    ScrollPane& AlwaysOn(bool b);
 
-  void Create(Window& parent);
-  LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
+  protected:
+    explicit ScrollPane(const defer_create_t&);
 
-private:
-  enum Flags {
-    ALWAYS_ON = 0x01
+    void Create(Window& parent);
+    LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+    enum Flags {
+      ALWAYS_ON = 0x01
+    };
+
+    Dimension extent_;
+    Point position_;
+    unsigned int flags_;
+
+    void ConfigScrollbars();
+    void ConfigOptionalScrollbars();
+    void ConfigAlwaysOnScrollbars();
+    void HandleHScroll(int action);
+    void HandleVScroll(int action);
   };
 
-  Dimension extent_;
-  Point position_;
-  unsigned int flags_;
-  
-  void ConfigScrollbars();
-  void ConfigOptionalScrollbars();
-  void ConfigAlwaysOnScrollbars();
-  void HandleHScroll(int action);
-  void HandleVScroll(int action);
-};
+}

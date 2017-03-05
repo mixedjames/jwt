@@ -24,18 +24,22 @@
 #include "defer-create.hpp"
 #include "event-types.hpp"
 
-struct StatusBar
-  : Window
-{
-  StatusBar(Window& parent);
-  StatusBar(Dialog& parent, int buttonId);
+namespace jwt {
 
-protected:
-  StatusBar(const defer_create_t&);
+  struct StatusBar
+    : Window
+  {
+    StatusBar(Window& parent);
+    StatusBar(Dialog& parent, int buttonId);
 
-  void Create(Window& parent);
+  protected:
+    StatusBar(const defer_create_t&);
 
-  LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+    void Create(Window& parent);
 
-private:
-};
+    LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+  };
+
+}

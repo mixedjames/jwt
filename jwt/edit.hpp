@@ -24,18 +24,22 @@
 #include "defer-create.hpp"
 #include "event-types.hpp"
 
-struct Edit
-  : Window
-{
-  Edit(Window& parent);
-  Edit(Dialog& parent, int buttonId);
+namespace jwt {
 
-protected:
-  Edit(const defer_create_t&);
+  struct Edit
+    : Window
+  {
+    Edit(Window& parent);
+    Edit(Dialog& parent, int buttonId);
 
-  void Create(Window& parent);
+  protected:
+    Edit(const defer_create_t&);
 
-  LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+    void Create(Window& parent);
 
-private:
-};
+    LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
+
+  private:
+  };
+
+}

@@ -19,47 +19,51 @@
 
 #include "rebar.hpp"
 
-Rebar::Rebar(Window& parent) {
-  Create(parent);
-}
+namespace jwt {
 
-Rebar::Rebar(const defer_create_t&) {
+  Rebar::Rebar(Window& parent) {
+    Create(parent);
+  }
 
-}
+  Rebar::Rebar(const defer_create_t&) {
 
-Rebar& Rebar::AddBand(Window& w) {
-  assert(hWnd_ != nullptr);
-  assert(HWND(w) != nullptr);
+  }
 
-  REBARBANDINFO rbbi = {};
+  Rebar& Rebar::AddBand(Window& w) {
+    assert(hWnd_ != nullptr);
+    assert(HWND(w) != nullptr);
 
-  rbbi.cbSize = sizeof(REBARBANDINFO);
-  rbbi.fMask = RBBIM_STYLE | RBBIM_TEXT | RBBIM_CHILD | RBBIM_CHILDSIZE | RBBIM_SIZE;
-  rbbi.fStyle = RBBS_CHILDEDGE | RBBS_GRIPPERALWAYS | RBBS_VARIABLEHEIGHT;
+    REBARBANDINFO rbbi = {};
 
-  rbbi.lpText = L"Test";
-  rbbi.hwndChild = (HWND) w;
-  rbbi.cyChild = 50;
-  rbbi.cxMinChild = 100;
-  rbbi.cyMinChild = 50;
-  rbbi.cx = 100;
+    rbbi.cbSize = sizeof(REBARBANDINFO);
+    rbbi.fMask = RBBIM_STYLE | RBBIM_TEXT | RBBIM_CHILD | RBBIM_CHILDSIZE | RBBIM_SIZE;
+    rbbi.fStyle = RBBS_CHILDEDGE | RBBS_GRIPPERALWAYS | RBBS_VARIABLEHEIGHT;
 
-  SendMessage(hWnd_, RB_INSERTBAND, -1, (LPARAM) &rbbi);
+    rbbi.lpText = L"Test";
+    rbbi.hwndChild = (HWND)w;
+    rbbi.cyChild = 50;
+    rbbi.cxMinChild = 100;
+    rbbi.cyMinChild = 50;
+    rbbi.cx = 100;
 
-  return *this;
-}
+    SendMessage(hWnd_, RB_INSERTBAND, -1, (LPARAM)&rbbi);
 
-void Rebar::Create(Window& parent) {
-  hWnd_ = CreateWindow(
-    REBARCLASSNAME, nullptr,
-    WS_VISIBLE | WS_CHILD | RBS_AUTOSIZE,
-    0, 0, 0, 0,
-    (HWND)parent, nullptr, HINST_COMMCTRL, nullptr
-  );
+    return *this;
+  }
 
-  assert(hWnd_ != nullptr);
-}
+  void Rebar::Create(Window& parent) {
+    hWnd_ = CreateWindow(
+      REBARCLASSNAME, nullptr,
+      WS_VISIBLE | WS_CHILD | RBS_AUTOSIZE,
+      0, 0, 0, 0,
+      (HWND)parent, nullptr, HINST_COMMCTRL, nullptr
+    );
 
-LRESULT Rebar::HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM) {
-  return FALSE;
-}
+    assert(hWnd_ != nullptr);
+  }
+
+  LRESULT Rebar::HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM) {
+    return FALSE;
+  }
+
+} // namespace jwt
