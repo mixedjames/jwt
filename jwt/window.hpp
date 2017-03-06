@@ -102,15 +102,71 @@ namespace jwt {
 
     virtual ~Window() {}
 
+    /**
+     * Gets the HWND contained by this Window.
+     * @return HWND
+     */
     HWND TheHWND() { return hWnd_; }
+
+    /**
+     * Gets a const version of the HWND contained by this Window.
+     * @return const HWND
+     */
     const HWND TheHWND() const { return hWnd_; }
 
   protected:
     HWND hWnd_;
 
+    /**
+     * Default constructor. Sets hWnd_ to nullptr.
+     */
     Window() : hWnd_(nullptr) {}
 
+    /**
+     * This method is part of the message reflection mechanism.
+     *
+     * Classes that may have child windows should call this function from
+     * their WndProc whenever they receive a notification message. This function
+     * will then dispatch the message appropriately to the wrapper class for
+     * the child window.
+     *
+     * At the very least, parent windows should ensure they forward:
+     * - WM_COMMAND
+     * - WM_NOTIFY
+     * - WM_HSCROLL
+     * - WM_VSCROLL
+     *
+     * Messages should be altered unchanged.
+     *
+     * @return FALSE if the the child window requests default processing
+     *         take place. A non-FALSE value otherwise - typically this should
+     *         be returned directly by the parent's WndProc.
+     */
     static LRESULT ReflectMessage(HWND, UINT, WPARAM, LPARAM);
+
+    /**
+     * JWT controls should override this method to receive notification
+     * messages from their underlying HWND.
+     *
+     * Note that because this might be called from a WndProc or a DlgProc
+     * you should return FALSE if you want the default processing to occur.
+     * The parent window will ensure that this happens; you must not call
+     * DefWindowProc yourself.
+     *
+     * For example, the Button class might implement this function as follows:
+     * ~~~~~~~~~~~~{.cpp}
+     * LRESULT HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
+     *   switch (m) {
+     *     case WM_COMMAND:
+     *       if (HIWORD(w) == BN_CLICKED) {
+     *         IWasClicked();
+     *       }
+     *       break;
+     *   }
+     *   return FALSE;
+     * }
+     * ~~~~~~~~~~~~
+     */
     virtual LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
 
   private:
@@ -118,13 +174,59 @@ namespace jwt {
     Window& operator= (const Window&) = delete;
   };
 
+  /**
+   * Gets the outer size of a Window. (i.e. the size measured outside of the
+   * non-client area)
+   * @return Dimension
+   */
   Dimension Size(const Window&);
+
+  /**
+   * Sets the outer size of a Window. (i.e. the size measured outside of the
+   * non-client area)
+   *
+   * @return Window& - the Window on which the function was called; allows
+   *         chaining.
+   */
   Window& Size(Window&, const Dimension&);
 
+  /**
+   * Gets the client size of a Window. (i.e. the size measured inside of the
+   * non-client area).
+   * @return Dimension
+   */
   Dimension ClientSize(const Window&);
+
+  /**
+   * Sets the client size of a Window. (i.e. the size measured inside of the
+   * non-client area). The total size of the Window will be the client size
+   * plus the size of the non-client area.
+   *
+   * @return Window& - the Window on which the function was called; allows
+   *         chaining.
+   */
   Window& ClientSize(Window&, const Dimension&);
 
+  /**
+   * Sets the position of a Window. The units depend on the type of Window:
+   * - Child window: local coordinates of the parent window
+   * - Non-child window: screen coordinates
+   *
+   * Note that in either case the coordinates may be negative.
+   * @return Point
+   */
   Point Position(const Window&);
+
+  /**
+   * Gets the position of a Window. The units depend on the type of Window:
+   * - Child window: local coordinates of the parent window
+   * - Non-child window: screen coordinates
+   *
+   * Note that in either case the coordinates may be negative.
+   *
+   * @return Window& - the Window on which the function was called; allows
+   *         chaining.
+   */
   Window& Position(Window&, const Point&);
 
   Rect Bounds(const Window&);

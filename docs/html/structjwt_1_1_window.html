@@ -113,23 +113,21 @@ Inheritance diagram for jwt::Window:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a21cedb5c161d5d5b834149f1cc179ecf"><td class="memItemLeft" align="right" valign="top"><a id="a21cedb5c161d5d5b834149f1cc179ecf"></a>
-HWND&#160;</td><td class="memItemRight" valign="bottom"><b>TheHWND</b> ()</td></tr>
+<tr class="memitem:a21cedb5c161d5d5b834149f1cc179ecf"><td class="memItemLeft" align="right" valign="top">HWND&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwt_1_1_window.html#a21cedb5c161d5d5b834149f1cc179ecf">TheHWND</a> ()</td></tr>
 <tr class="separator:a21cedb5c161d5d5b834149f1cc179ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae12dad441423f8d5db1a04bf6e0e7acc"><td class="memItemLeft" align="right" valign="top"><a id="ae12dad441423f8d5db1a04bf6e0e7acc"></a>
-const HWND&#160;</td><td class="memItemRight" valign="bottom"><b>TheHWND</b> () const</td></tr>
+<tr class="memitem:ae12dad441423f8d5db1a04bf6e0e7acc"><td class="memItemLeft" align="right" valign="top">const HWND&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwt_1_1_window.html#ae12dad441423f8d5db1a04bf6e0e7acc">TheHWND</a> () const</td></tr>
 <tr class="separator:ae12dad441423f8d5db1a04bf6e0e7acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a96a1074c3773fce32502c85620368677"><td class="memItemLeft" align="right" valign="top"><a id="a96a1074c3773fce32502c85620368677"></a>
-virtual LRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>HandleReflectedMessage</b> (HWND, UINT, WPARAM, LPARAM)</td></tr>
+<tr class="memitem:a3801af0c41d8d77fda890d685fcf3276"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwt_1_1_window.html#a3801af0c41d8d77fda890d685fcf3276">Window</a> ()</td></tr>
+<tr class="separator:a3801af0c41d8d77fda890d685fcf3276"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96a1074c3773fce32502c85620368677"><td class="memItemLeft" align="right" valign="top">virtual LRESULT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwt_1_1_window.html#a96a1074c3773fce32502c85620368677">HandleReflectedMessage</a> (HWND, UINT, WPARAM, LPARAM)</td></tr>
 <tr class="separator:a96a1074c3773fce32502c85620368677"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a733aee7d0700986ab0cfc0ef34809d99"><td class="memItemLeft" align="right" valign="top"><a id="a733aee7d0700986ab0cfc0ef34809d99"></a>
-static LRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>ReflectMessage</b> (HWND, UINT, WPARAM, LPARAM)</td></tr>
+<tr class="memitem:a733aee7d0700986ab0cfc0ef34809d99"><td class="memItemLeft" align="right" valign="top">static LRESULT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwt_1_1_window.html#a733aee7d0700986ab0cfc0ef34809d99">ReflectMessage</a> (HWND, UINT, WPARAM, LPARAM)</td></tr>
 <tr class="separator:a733aee7d0700986ab0cfc0ef34809d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -165,9 +163,199 @@ HWND&#160;</td><td class="memItemRight" valign="bottom"><b>hWnd_</b></td></tr>
 <li>WM_NOTIFY</li>
 <li>WM_HSCROLL/WM_VSCROLL</li>
 </ul>
-<p>When it identifies one if these messages it should call <code>Window::ReflectMessage(...)</code> copying the message parameters directly to this function.</p>
+<p>When it identifies one if these messages it should call <code><a class="el" href="structjwt_1_1_window.html#a733aee7d0700986ab0cfc0ef34809d99">Window::ReflectMessage</a>(...)</code> copying the message parameters directly to this function.</p>
 <p>This function will examine the message in question and, if it finds a <a class="el" href="structjwt_1_1_window.html">Window</a>, it calls the virtual function <code>HandleReflectedMessage(...)</code> for that <a class="el" href="structjwt_1_1_window.html">Window</a>. A wrapper subclass should override this function and handle these messages accordingly. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a3801af0c41d8d77fda890d685fcf3276"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3801af0c41d8d77fda890d685fcf3276">&#9670;&nbsp;</a></span>Window()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">jwt::Window::Window </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Default constructor. Sets hWnd_ to nullptr. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a96a1074c3773fce32502c85620368677"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96a1074c3773fce32502c85620368677">&#9670;&nbsp;</a></span>HandleReflectedMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual LRESULT jwt::Window::HandleReflectedMessage </td>
+          <td>(</td>
+          <td class="paramtype">HWND&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">WPARAM&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LPARAM&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>JWT controls should override this method to receive notification messages from their underlying HWND.</p>
+<p>Note that because this might be called from a WndProc or a DlgProc you should return FALSE if you want the default processing to occur. The parent window will ensure that this happens; you must not call DefWindowProc yourself.</p>
+<p>For example, the <a class="el" href="structjwt_1_1_button.html">Button</a> class might implement this function as follows: </p><div class="fragment"><div class="line">LRESULT <a class="code" href="structjwt_1_1_window.html#a96a1074c3773fce32502c85620368677">HandleReflectedMessage</a>(HWND h, UINT m, WPARAM w, LPARAM l) {</div><div class="line">  <span class="keywordflow">switch</span> (m) {</div><div class="line">    <span class="keywordflow">case</span> WM_COMMAND:</div><div class="line">      <span class="keywordflow">if</span> (HIWORD(w) == BN_CLICKED) {</div><div class="line">        IWasClicked();</div><div class="line">      }</div><div class="line">      <span class="keywordflow">break</span>;</div><div class="line">  }</div><div class="line">  <span class="keywordflow">return</span> FALSE;</div><div class="line">}</div></div><!-- fragment --> 
+<p>Reimplemented in <a class="el" href="structjwt_1_1_list_box.html#a78d5608e1dae6ec75a6a6534a60ab1b6">jwt::ListBox</a>, <a class="el" href="structjwt_1_1_toolbar.html#acf3b18da7ea8aa6b15c0d91164eaa920">jwt::Toolbar</a>, <a class="el" href="structjwt_1_1_button.html#af42ea2da2cfc6a9dc9a72cf73ec323a4">jwt::Button</a>, <a class="el" href="structjwt_1_1_rebar.html#a663e6a7b20f754123369d42d45efe284">jwt::Rebar</a>, <a class="el" href="structjwt_1_1_edit.html#a3bb7bc32f9cbb062b3b7b9502971cb29">jwt::Edit</a>, and <a class="el" href="structjwt_1_1_status_bar.html#ad0abf6e11253cfa06521844cb2da5e64">jwt::StatusBar</a>.</p>
+
+</div>
+</div>
+<a id="a733aee7d0700986ab0cfc0ef34809d99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a733aee7d0700986ab0cfc0ef34809d99">&#9670;&nbsp;</a></span>ReflectMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static LRESULT jwt::Window::ReflectMessage </td>
+          <td>(</td>
+          <td class="paramtype">HWND&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">WPARAM&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LPARAM&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method is part of the message reflection mechanism.</p>
+<p>Classes that may have child windows should call this function from their WndProc whenever they receive a notification message. This function will then dispatch the message appropriately to the wrapper class for the child window.</p>
+<p>At the very least, parent windows should ensure they forward:</p><ul>
+<li>WM_COMMAND</li>
+<li>WM_NOTIFY</li>
+<li>WM_HSCROLL</li>
+<li>WM_VSCROLL</li>
+</ul>
+<p>Messages should be altered unchanged.</p>
+<dl class="section return"><dt>Returns</dt><dd>FALSE if the the child window requests default processing take place. A non-FALSE value otherwise - typically this should be returned directly by the parent's WndProc. </dd></dl>
+
+</div>
+</div>
+<a id="a21cedb5c161d5d5b834149f1cc179ecf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21cedb5c161d5d5b834149f1cc179ecf">&#9670;&nbsp;</a></span>TheHWND() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HWND jwt::Window::TheHWND </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Gets the HWND contained by this <a class="el" href="structjwt_1_1_window.html">Window</a>. </p><dl class="section return"><dt>Returns</dt><dd>HWND </dd></dl>
+
+</div>
+</div>
+<a id="ae12dad441423f8d5db1a04bf6e0e7acc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae12dad441423f8d5db1a04bf6e0e7acc">&#9670;&nbsp;</a></span>TheHWND() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const HWND jwt::Window::TheHWND </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Gets a const version of the HWND contained by this <a class="el" href="structjwt_1_1_window.html">Window</a>. </p><dl class="section return"><dt>Returns</dt><dd>const HWND </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>jwt/<a class="el" href="window_8hpp_source.html">window.hpp</a></li>
 </ul>
 </div><!-- contents -->

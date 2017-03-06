@@ -12,6 +12,8 @@ var NAVTREEINDEX0 =
 "edit_8hpp_source.html":[2,0,0,6],
 "event-types_8hpp_source.html":[2,0,0,7],
 "files.html":[2,0],
+"functions.html":[1,3,0],
+"functions_func.html":[1,3,1],
 "hierarchy.html":[1,2],
 "index.html":[],
 "jwt_8hpp_source.html":[2,0,0,8],
