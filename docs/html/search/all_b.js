@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['window',['Window',['../structjwt_1_1_window.html',1,'jwt']]],
-  ['window_2ehpp',['window.hpp',['../window_8hpp.html',1,'']]]
+  ['scrollpane',['ScrollPane',['../structjwt_1_1_scroll_pane.html',1,'jwt']]],
+  ['statusbar',['StatusBar',['../structjwt_1_1_status_bar.html',1,'jwt']]]
 ];

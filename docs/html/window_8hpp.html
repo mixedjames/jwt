@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -43,6 +50,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('window_8hpp.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -57,14 +79,10 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_709feb965f49d259812c99d69d24866f.html">jwt</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">window.hpp File Reference</div>  </div>
@@ -79,6 +97,11 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwt_1_1_window.html">jwt::Window</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacejwt"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejwt.html">jwt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -126,10 +149,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>jwt::Visible</b> (con
 Window &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>jwt::Visible</b> (Window &amp;, bool)</td></tr>
 <tr class="separator:a371284ee8dbb60f4e9cbc34f03a8a06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15217d50f095c9c96ac124cf1a6a74e0"><td class="memTemplParams" colspan="2">template&lt;typename Callable &gt; </td></tr>
-<tr class="memitem:a15217d50f095c9c96ac124cf1a6a74e0"><td class="memTemplItemLeft" align="right" valign="top">Window &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>jwt::ForEachChild</b> (Window &amp;w, Callable c)</td></tr>
+<tr class="memitem:a15217d50f095c9c96ac124cf1a6a74e0"><td class="memTemplItemLeft" align="right" valign="top">Window &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacejwt.html#a15217d50f095c9c96ac124cf1a6a74e0">jwt::ForEachChild</a> (Window &amp;w, Callable c)</td></tr>
 <tr class="separator:a15217d50f095c9c96ac124cf1a6a74e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a481eacee18146686e9038be82aa84349"><td class="memTemplParams" colspan="2">template&lt;typename Callable &gt; </td></tr>
-<tr class="memitem:a481eacee18146686e9038be82aa84349"><td class="memTemplItemLeft" align="right" valign="top">Window &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>jwt::ForEachDescendant</b> (Window &amp;, Callable c)</td></tr>
+<tr class="memitem:a481eacee18146686e9038be82aa84349"><td class="memTemplItemLeft" align="right" valign="top">Window &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacejwt.html#a481eacee18146686e9038be82aa84349">jwt::ForEachDescendant</a> (Window &amp;, Callable c)</td></tr>
 <tr class="separator:a481eacee18146686e9038be82aa84349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -137,77 +160,16 @@ Window &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>jwt::Visible<
 <li>Definition for struct Window</li>
 <li>Declarations for a series of non-member functions that manipulate Window instances through the public interface of Window &amp; are therefore not members. </li>
 </ol>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="file_a15217d50f095c9c96ac124cf1a6a74e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#file_a15217d50f095c9c96ac124cf1a6a74e0">&#9670;&nbsp;</a></span>ForEachChild()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Callable &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">Window &amp; jwt::ForEachChild </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjwt_1_1_window.html">Window</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Callable&#160;</td>
-          <td class="paramname"><em>c</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Iterates through all the child windows of this window and calls c for each one with the child HWND as an argument.</p>
-<p>This function is analagous to <code>EnumChildWindow</code> but has subtly different behaviour: <code>EnumChildWindow</code> returns every descendant (i.e. children, grandchildren, ...) whereas ForEachChild returns <em>only</em> direct children. </p>
-
-</div>
-</div>
-<a id="file_a481eacee18146686e9038be82aa84349"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#file_a481eacee18146686e9038be82aa84349">&#9670;&nbsp;</a></span>ForEachDescendant()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Callable &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">Window &amp; jwt::ForEachDescendant </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjwt_1_1_window.html">Window</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Callable&#160;</td>
-          <td class="paramname"><em>c</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Iterates through all the descendant windows of this window and calls c for each one with the child HWND as an argument.</p>
-<p>This function is truly analagous to <code>EnumChildWindow</code> unlike <code>ForEachChild</code> </p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_709feb965f49d259812c99d69d24866f.html">jwt</a></li><li class="navelem"><a class="el" href="window_8hpp.html">window.hpp</a></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>
