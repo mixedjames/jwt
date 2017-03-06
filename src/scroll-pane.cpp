@@ -46,7 +46,7 @@ namespace jwt {
     CreateWindow(CLASS_NAME, L"",
       WS_VISIBLE | WS_CHILD | WS_HSCROLL | WS_VSCROLL,
       0, 0, 0, 0,
-      HWND(parent), nullptr, GetModuleHandle(nullptr), (LPVOID) this
+      parent.TheHWND(), nullptr, GetModuleHandle(nullptr), (LPVOID) this
     );
   }
 
@@ -69,7 +69,7 @@ namespace jwt {
   }
 
   ScrollPane& ScrollPane::CalculateScrollableExtent() {
-    ForEachChild([this](HWND h) {
+    ForEachChild(*this, [this](HWND h) {
       RECT r;
       GetClientRect(h, &r);
       MapWindowPoints(h, hWnd_, (POINT*)&r, 2);
@@ -105,7 +105,7 @@ namespace jwt {
     ShowScrollBar(hWnd_, SB_HORZ, true);
     ShowScrollBar(hWnd_, SB_VERT, true);
 
-    Dimension size = ClientSize();
+    Dimension size = ClientSize(*this);
     SCROLLINFO si = {};
 
     si.cbSize = sizeof(SCROLLINFO);
@@ -146,7 +146,7 @@ namespace jwt {
   }
 
   void ScrollPane::ConfigOptionalScrollbars() {
-    Dimension outerSize = Size();
+    Dimension outerSize = Size(*this);
     Dimension innerSize(
       outerSize.w - GetSystemMetrics(SM_CXVSCROLL),
       outerSize.h - GetSystemMetrics(SM_CXHSCROLL)
@@ -177,7 +177,7 @@ namespace jwt {
     }
     UpdateWindow(hWnd_);
 
-    innerSize = ClientSize();
+    innerSize = ClientSize(*this);
 
     si.cbSize = sizeof(SCROLLINFO);
     si.fMask = SIF_RANGE | SIF_PAGE;

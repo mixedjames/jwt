@@ -93,7 +93,7 @@ namespace jwt {
     hWnd_ = CreateWindowEx(0, TOOLBARCLASSNAME, 0,
       TBSTYLE_FLAT | CCS_ADJUSTABLE | CCS_NODIVIDER | WS_CHILD | WS_VISIBLE | CCS_NOPARENTALIGN | CCS_NORESIZE,
       0, 0, 0, 0,
-      (HWND)parent, (HMENU)0, GetModuleHandle(nullptr), 0);
+      parent.TheHWND(), (HMENU)0, GetModuleHandle(nullptr), 0);
 
     SendMessage(hWnd_, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
   }

@@ -38,8 +38,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     PostQuitMessage(0);
   });
 
-  w.ClientSize(Dimension(600, 400));
-  w.Visible(true);
+  ClientSize(w, Dimension(600, 400));
+  Visible(w, true);
 
   return DefaultPump().Pump();
 }

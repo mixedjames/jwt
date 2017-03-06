@@ -59,7 +59,7 @@ namespace jwt {
     CreateDialogParam(
       GetModuleHandle(nullptr),
       MAKEINTRESOURCE(resourceId),
-      (HWND)parent,
+      parent.TheHWND(),
       DlgProcAdapter,
       (LPARAM) this
     );

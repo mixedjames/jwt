@@ -41,7 +41,7 @@ namespace jwt {
     hWnd_ = CreateWindow(
       STATUSCLASSNAME, L"Test", WS_VISIBLE | WS_CHILD | SBARS_SIZEGRIP,
       0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
-      (HWND)parent, nullptr, nullptr, nullptr
+      parent.TheHWND(), nullptr, nullptr, nullptr
     );
     assert(hWnd_ != nullptr);
 

@@ -40,7 +40,7 @@ namespace jwt {
     hWnd_ = CreateWindow(
       L"EDIT", L"", WS_VISIBLE | WS_CHILD,
       0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
-      (HWND)parent, nullptr, nullptr, nullptr
+      parent.TheHWND(), nullptr, nullptr, nullptr
     );
     assert(hWnd_ != nullptr);
 

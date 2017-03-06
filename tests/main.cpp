@@ -17,18 +17,20 @@ using namespace std;
 using namespace jwt;
 
 void go() {
-  INITCOMMONCONTROLSEX icce = {
-    sizeof(INITCOMMONCONTROLSEX),
-    ICC_BAR_CLASSES
-  };
-  if (!InitCommonControlsEx(&icce)) {
-    assert(false);
-  }
+  AppWindow w;
 
+  Text(w, L"Hello World!");
+  ClientSize(w, Dimension(600, 400));
+
+  w.On(Close, []() {
+    PostQuitMessage(0);
+  });
+
+  Visible(w, true);
+  DefaultPump().Pump();
 }
 
 int main() {
-
   go();
   return 0;
 }

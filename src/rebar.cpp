@@ -31,7 +31,7 @@ namespace jwt {
 
   Rebar& Rebar::AddBand(Window& w) {
     assert(hWnd_ != nullptr);
-    assert(HWND(w) != nullptr);
+    assert(w.TheHWND() != nullptr);
 
     REBARBANDINFO rbbi = {};
 
@@ -40,7 +40,7 @@ namespace jwt {
     rbbi.fStyle = RBBS_CHILDEDGE | RBBS_GRIPPERALWAYS | RBBS_VARIABLEHEIGHT;
 
     rbbi.lpText = L"Test";
-    rbbi.hwndChild = (HWND)w;
+    rbbi.hwndChild = w.TheHWND();
     rbbi.cyChild = 50;
     rbbi.cxMinChild = 100;
     rbbi.cyMinChild = 50;
@@ -56,7 +56,7 @@ namespace jwt {
       REBARCLASSNAME, nullptr,
       WS_VISIBLE | WS_CHILD | RBS_AUTOSIZE,
       0, 0, 0, 0,
-      (HWND)parent, nullptr, HINST_COMMCTRL, nullptr
+      parent.TheHWND(), nullptr, HINST_COMMCTRL, nullptr
     );
 
     assert(hWnd_ != nullptr);

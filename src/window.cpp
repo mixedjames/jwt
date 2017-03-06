@@ -22,98 +22,11 @@
 #include <assert.h>
 
 namespace jwt {
-
-  Dimension Window::Size() const {
-    assert(hWnd_ != nullptr);
-
-    RECT r;
-    GetWindowRect(hWnd_, &r);
-    return Dimension(r.right - r.left, r.bottom - r.top);
-  }
-
-  Window& Window::Size(const Dimension& d) {
-    assert(hWnd_ != nullptr);
-
-    SetWindowPos(
-      hWnd_, nullptr, 0, 0,
-      d.w, d.h,
-      SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-    return *this;
-  }
-
-  Dimension Window::ClientSize() const {
-    assert(hWnd_ != nullptr);
-
-    RECT r;
-    GetClientRect(hWnd_, &r);
-    return Dimension(r.right - r.left, r.bottom - r.top);
-  }
-
-  Window& Window::ClientSize(const Dimension& d) {
-    assert(hWnd_ != nullptr);
-
-    RECT r = {
-      0, 0, d.w, d.h
-    };
-
-    DWORD style = Style();
-    DWORD exStyle = ExStyle();
-
-    if (style & WS_CHILD) {
-      // child window --> can't have a menu
-      AdjustWindowRectEx(&r, style, false, exStyle);
-    }
-    else {
-      // non-child window --> GetMenu should be a genuine menu or null if none present
-      bool hasMenu = (GetMenu(hWnd_) != nullptr);
-      AdjustWindowRectEx(&r, style, hasMenu, exStyle);
-    }
-
-    // AdjustWindowRectEx doesn't account for scrollbars
-    if (style & WS_HSCROLL) {
-      r.right += GetSystemMetrics(SM_CXVSCROLL);
-    }
-
-    if (style & WS_VSCROLL) {
-      r.bottom += GetSystemMetrics(SM_CYHSCROLL);
-    }
-
-    SetWindowPos(
-      hWnd_, nullptr, 0, 0,
-      r.right - r.left, r.bottom - r.top,
-      SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-
-    return *this;
-  }
-
-  std::wstring Window::Text() const {
-    assert(hWnd_ != nullptr);
-
-    std::wstring txt(' ', GetWindowTextLength(hWnd_));
-    GetWindowText(hWnd_, &*txt.begin(), txt.size());
-
-    return txt;
-  }
-
-  Window& Window::Text(const std::wstring& s) {
-    assert(hWnd_ != nullptr);
-
-    SetWindowText(hWnd_, s.c_str());
-    return *this;
-  }
-
-  bool Window::Visible() const {
-    assert(hWnd_ != nullptr);
-
-    return !!(Style() & WS_VISIBLE);
-  }
-
-  Window& Window::Visible(bool visible) {
-    assert(hWnd_ != nullptr);
-
-    ShowWindow(hWnd_, (visible) ? SW_SHOWNORMAL : SW_HIDE);
-    return *this;
-  }
+  //
+  // **************************************************
+  // Window member function definitions
+  // **************************************************
+  //
 
   LRESULT Window::ReflectMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
     Window* wnd = nullptr;
@@ -131,7 +44,7 @@ namespace jwt {
       NMHDR* hdr = (NMHDR*)l;
       wnd = (Window*)GetWindowLong(hdr->hwndFrom, GWL_USERDATA);
     }
-                    break;
+    break;
 
     default:
       assert(false);
@@ -151,4 +64,141 @@ namespace jwt {
     return DefWindowProc(h, m, w, l);
   }
 
+  //
+  // **************************************************
+  // Non-member Window interface function definitions
+  // **************************************************
+  //
+
+  Dimension Size(const Window& w) {
+    assert(w.TheHWND() != nullptr);
+
+    RECT r;
+    GetWindowRect(w.TheHWND(), &r);
+    return Dimension(r.right - r.left, r.bottom - r.top);
+  }
+
+  Window& Size(Window& w, const Dimension& d) {
+    assert(w.TheHWND() != nullptr);
+
+    SetWindowPos(
+      w.TheHWND(), nullptr, 0, 0,
+      d.w, d.h,
+      SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+    return w;
+  }
+
+  Dimension ClientSize(const Window& w) {
+    assert(w.TheHWND() != nullptr);
+
+    RECT r;
+    GetClientRect(w.TheHWND(), &r);
+    return Dimension(r.right - r.left, r.bottom - r.top);
+  }
+
+  Window& ClientSize(Window& w, const Dimension& d) {
+    assert(w.TheHWND() != nullptr);
+
+    RECT r = {
+      0, 0, d.w, d.h
+    };
+
+    DWORD style = Style(w);
+    DWORD exStyle = ExStyle(w);
+
+    if (style & WS_CHILD) {
+      // child window --> can't have a menu
+      AdjustWindowRectEx(&r, style, false, exStyle);
+    }
+    else {
+      // non-child window --> GetMenu should be a genuine menu or null if none present
+      bool hasMenu = (GetMenu(w.TheHWND()) != nullptr);
+      AdjustWindowRectEx(&r, style, hasMenu, exStyle);
+    }
+
+    // AdjustWindowRectEx doesn't account for scrollbars
+    if (style & WS_HSCROLL) {
+      r.right += GetSystemMetrics(SM_CXVSCROLL);
+    }
+
+    if (style & WS_VSCROLL) {
+      r.bottom += GetSystemMetrics(SM_CYHSCROLL);
+    }
+
+    SetWindowPos(
+      w.TheHWND(), nullptr, 0, 0,
+      r.right - r.left, r.bottom - r.top,
+      SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
+    return w;
+  }
+
+  Point Position(const Window& w) {
+    assert(w.TheHWND() != nullptr);
+
+    RECT r = {};
+    GetWindowRect(w.TheHWND(), &r);
+
+    return Point(r.left, r.top);
+  }
+
+  Window& Position(Window& w, const Point& p) {
+    assert(w.TheHWND() != nullptr);
+
+    SetWindowPos(
+      w.TheHWND(), nullptr,
+      p.x, p.y, 0, 0,
+      SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
+    return w;
+  }
+
+  Rect Bounds(const Window& w) {
+    assert(w.TheHWND() != nullptr);
+
+    RECT r = {};
+    GetWindowRect(w.TheHWND(), &r);
+
+    return Rect(r);
+  }
+
+  Window& Bounds(Window& w, const Rect& r) {
+    assert(w.TheHWND() != nullptr);
+
+    SetWindowPos(
+      w.TheHWND(), nullptr,
+      r.position.x, r.position.y, r.size.w, r.size.h,
+      SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
+    return w;
+  }
+
+  std::wstring Text(const Window& w) {
+    assert(w.TheHWND() != nullptr);
+
+    std::wstring txt(' ', GetWindowTextLength(w.TheHWND()));
+    GetWindowText(w.TheHWND(), &*txt.begin(), txt.size());
+
+    return txt;
+  }
+
+  Window& Text(Window& w, const std::wstring& s) {
+    assert(w.TheHWND() != nullptr);
+
+    SetWindowText(w.TheHWND(), s.c_str());
+    return w;
+  }
+
+  bool Visible(const Window& w) {
+    assert(w.TheHWND() != nullptr);
+
+    return !!(Style(w) & WS_VISIBLE);
+  }
+
+  Window& Visible(Window& w, bool visible) {
+    assert(w.TheHWND() != nullptr);
+
+    ShowWindow(w.TheHWND(), (visible) ? SW_SHOWNORMAL : SW_HIDE);
+    return w;
+  }
 } // namespace jwt

@@ -21,13 +21,13 @@
 namespace jwt {
 
   template<typename Callable>
-  Window& Window::ForEachChild(Callable c) {
+  Window& ForEachChild(Window& w, Callable c) {
     struct Callback {
       Callable callback;
       HWND parent;
 
       Callback(Callable c, HWND h) : callback(c), parent(h) {}
-    } callback(c, hWnd_);
+    } callback(c, w.TheHWND());
 
     WNDENUMPROC ep = [](HWND h, LPARAM l) {
       Callback* callback = (Callback*)l;
@@ -38,8 +38,26 @@ namespace jwt {
       return TRUE;
     };
 
-    EnumChildWindows(hWnd_, ep, (LPARAM)&callback);
-    return *this;
+    EnumChildWindows(w.TheHWND(), ep, (LPARAM)&callback);
+    return w;
   }
 
+  template<typename Callable>
+  Window& ForEachDescendant(Window&, Callable c) {
+    struct Callback {
+      Callable callback;
+      HWND parent;
+
+      Callback(Callable c, HWND h) : callback(c), parent(h) {}
+    } callback(c, w.TheHWND());
+
+    WNDENUMPROC ep = [](HWND h, LPARAM l) {
+      Callback* callback = (Callback*)l;
+      callback->callback(h);
+      return TRUE;
+    };
+
+    EnumChildWindows(w.TheHWND(), ep, (LPARAM)&callback);
+    return w;
+  }
 }
