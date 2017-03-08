@@ -29,17 +29,24 @@ namespace jwt {
   struct Edit
     : Window
   {
-    Edit(Window& parent);
+    Edit(Window& parent, const std::wstring&, DWORD flags = 0);
     Edit(Dialog& parent, int buttonId);
 
   protected:
     Edit(const defer_create_t&);
 
-    void Create(Window& parent);
+    void Create(Window& parent, DWORD flags);
 
     LRESULT HandleReflectedMessage(HWND, UINT, WPARAM, LPARAM);
 
   private:
   };
 
+  std::wstring GetSelectedText(const Edit&);
+
+  Edit& ReplaceSelectedText(Edit&, const std::wstring&);
+
+  std::wstring GetCueBanner(const Edit&);
+
+  Edit& SetCueBanner(Edit& e, const std::wstring&);
 }

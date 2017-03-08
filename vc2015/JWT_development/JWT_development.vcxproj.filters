@@ -19,64 +19,79 @@
     <Filter Include="Source Files\tests">
       <UniqueIdentifier>{ef1584c6-1122-448c-8bfa-54dea9e2c3be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\jwt">
+      <UniqueIdentifier>{88689353-59fb-4c08-8768-fe15174f6def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tests">
+      <UniqueIdentifier>{1c012582-aecd-4221-91d8-85f314e0c7be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\jwt\app-window.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\button.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\custom-window.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\custom-window-impl.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\defer-create.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\dialog.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\edit.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\event-types.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\jwt.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\libraries.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\list-box.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\measurement.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\message-pump.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\rebar.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\scroll-pane.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\status-bar.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\toolbar.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\window.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jwt\window-impl.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jwt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\button-tests.hpp">
+      <Filter>Header Files\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\edit-tests.hpp">
+      <Filter>Header Files\tests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,5 +140,21 @@
     <ClCompile Include="..\..\tests\main.cpp">
       <Filter>Source Files\tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tests\button-test.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\edit-tests.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -26,7 +26,13 @@ namespace jwt {
     int h;
 
     Dimension() : w(0), h(0) {}
+    
     Dimension(int w, int h) : w(w), h(h) {}
+
+    Dimension(const POINT& topLeft, const POINT& bottomRight)
+      : w(bottomRight.x - topLeft.x), h(bottomRight.y - topLeft.y)
+    {}
+
     explicit Dimension(const RECT& r) : w(r.right - r.left), h(r.bottom - r.top) {}
 
     explicit operator RECT() const {

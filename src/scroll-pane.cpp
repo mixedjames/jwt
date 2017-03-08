@@ -105,7 +105,7 @@ namespace jwt {
     ShowScrollBar(hWnd_, SB_HORZ, true);
     ShowScrollBar(hWnd_, SB_VERT, true);
 
-    Dimension size = ClientSize(*this);
+    Dimension size = GetClientSize(*this);
     SCROLLINFO si = {};
 
     si.cbSize = sizeof(SCROLLINFO);
@@ -146,7 +146,7 @@ namespace jwt {
   }
 
   void ScrollPane::ConfigOptionalScrollbars() {
-    Dimension outerSize = Size(*this);
+    Dimension outerSize = GetSize(*this);
     Dimension innerSize(
       outerSize.w - GetSystemMetrics(SM_CXVSCROLL),
       outerSize.h - GetSystemMetrics(SM_CXHSCROLL)
@@ -177,7 +177,7 @@ namespace jwt {
     }
     UpdateWindow(hWnd_);
 
-    innerSize = ClientSize(*this);
+    innerSize = GetClientSize(*this);
 
     si.cbSize = sizeof(SCROLLINFO);
     si.fMask = SIF_RANGE | SIF_PAGE;

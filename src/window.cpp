@@ -70,7 +70,15 @@ namespace jwt {
   // **************************************************
   //
 
-  Dimension Size(const Window& w) {
+  std::wstring ClassName(const Window& w) {
+    assert(w.TheHWND() != nullptr);
+
+    wchar_t buffer[200] = {};
+    GetClassName(w.TheHWND(), buffer, sizeof(buffer)/sizeof(wchar_t));
+    return buffer;
+  }
+
+  Dimension GetSize(const Window& w) {
     assert(w.TheHWND() != nullptr);
 
     RECT r;
@@ -78,7 +86,7 @@ namespace jwt {
     return Dimension(r.right - r.left, r.bottom - r.top);
   }
 
-  Window& Size(Window& w, const Dimension& d) {
+  Window& SetSize(Window& w, const Dimension& d) {
     assert(w.TheHWND() != nullptr);
 
     SetWindowPos(
@@ -88,7 +96,7 @@ namespace jwt {
     return w;
   }
 
-  Dimension ClientSize(const Window& w) {
+  Dimension GetClientSize(const Window& w) {
     assert(w.TheHWND() != nullptr);
 
     RECT r;
@@ -96,7 +104,7 @@ namespace jwt {
     return Dimension(r.right - r.left, r.bottom - r.top);
   }
 
-  Window& ClientSize(Window& w, const Dimension& d) {
+  Window& SetClientSize(Window& w, const Dimension& d) {
     assert(w.TheHWND() != nullptr);
 
     RECT r = {
@@ -133,16 +141,24 @@ namespace jwt {
     return w;
   }
 
-  Point Position(const Window& w) {
+  Point GetPosition(const Window& w) {
     assert(w.TheHWND() != nullptr);
 
     RECT r = {};
     GetWindowRect(w.TheHWND(), &r);
 
-    return Point(r.left, r.top);
+    if (HasStyle(w, WS_CHILD)) {
+      POINT topLeft = { r.left, r.top };
+      ScreenToClient(w.TheHWND(), &topLeft);
+
+      return Point(r.left, r.top);
+    }
+    else {
+      return Point(r.left, r.top);
+    }
   }
 
-  Window& Position(Window& w, const Point& p) {
+  Window& SetPosition(Window& w, const Point& p) {
     assert(w.TheHWND() != nullptr);
 
     SetWindowPos(
@@ -153,16 +169,27 @@ namespace jwt {
     return w;
   }
 
-  Rect Bounds(const Window& w) {
+  Rect GetBounds(const Window& w) {
     assert(w.TheHWND() != nullptr);
 
     RECT r = {};
     GetWindowRect(w.TheHWND(), &r);
 
-    return Rect(r);
+    if (HasStyle(w, WS_CHILD)) {
+      POINT topLeft = { r.left, r.top };
+      POINT bottomRight = { r.right, r.bottom };
+
+      ScreenToClient(w.TheHWND(), &topLeft);
+      ScreenToClient(w.TheHWND(), &bottomRight);
+
+      return Rect(Point(topLeft), Dimension(topLeft, bottomRight));
+    }
+    else {
+      return Rect(r);
+    }
   }
 
-  Window& Bounds(Window& w, const Rect& r) {
+  Window& SetBounds(Window& w, const Rect& r) {
     assert(w.TheHWND() != nullptr);
 
     SetWindowPos(
@@ -173,7 +200,7 @@ namespace jwt {
     return w;
   }
 
-  std::wstring Text(const Window& w) {
+  std::wstring GetText(const Window& w) {
     assert(w.TheHWND() != nullptr);
 
     std::wstring txt(' ', GetWindowTextLength(w.TheHWND()));
@@ -182,20 +209,20 @@ namespace jwt {
     return txt;
   }
 
-  Window& Text(Window& w, const std::wstring& s) {
+  Window& SetText(Window& w, const std::wstring& s) {
     assert(w.TheHWND() != nullptr);
 
     SetWindowText(w.TheHWND(), s.c_str());
     return w;
   }
 
-  bool Visible(const Window& w) {
+  bool IsVisible(const Window& w) {
     assert(w.TheHWND() != nullptr);
 
     return !!(Style(w) & WS_VISIBLE);
   }
 
-  Window& Visible(Window& w, bool visible) {
+  Window& SetVisible(Window& w, bool visible) {
     assert(w.TheHWND() != nullptr);
 
     ShowWindow(w.TheHWND(), (visible) ? SW_SHOWNORMAL : SW_HIDE);

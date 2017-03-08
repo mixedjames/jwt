@@ -48,4 +48,7 @@ namespace jwt {
   };
   extern const ClickTag Click;
 
+  struct SecondaryActionTag {
+  };
+  extern const SecondaryActionTag SecondaryAction;
 }

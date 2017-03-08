@@ -1,14 +1,9 @@
-#include "libraries.hpp"
-#include "app-window.hpp"
-#include "scroll-pane.hpp"
-#include "dialog.hpp"
-#include "button.hpp"
-#include "edit.hpp"
-#include "list-box.hpp"
-#include "status-bar.hpp"
-#include "toolbar.hpp"
-#include "rebar.hpp"
 #include "message-pump.hpp"
+#include "dialog.hpp"
+#include "resource.h"
+
+#include "button-tests.hpp"
+#include "edit-tests.hpp"
 
 #include <iostream>
 #include <memory>
@@ -16,21 +11,22 @@
 using namespace std;
 using namespace jwt;
 
-void go() {
-  AppWindow w;
+int Start() {
+  Dialog d(IDD_HOMEPAGE);
 
-  Text(w, L"Hello World!");
-  ClientSize(w, Dimension(600, 400));
+  d.On(Close, []() { PostQuitMessage(0); });
+  d.On(Command, IDC_BUTTONTESTS, ShowButtonTests);
+  d.On(Command, IDC_EDITTESTS, ShowEditTests);
 
-  w.On(Close, []() {
-    PostQuitMessage(0);
-  });
+  SetVisible(d, true);
 
-  Visible(w, true);
-  DefaultPump().Pump();
+  return DefaultPump().Pump();
 }
 
 int main() {
-  go();
-  return 0;
+  return Start();
+}
+
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+  return Start();
 }

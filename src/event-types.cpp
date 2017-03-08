@@ -23,5 +23,6 @@ namespace jwt {
   const CloseTag Close;
   const CommandTag Command;
   const ClickTag Click;
+  const SecondaryActionTag SecondaryAction;
 
 } // namespace jwt

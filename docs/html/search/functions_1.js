@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['foreachchild',['ForEachChild',['../namespacejwt.html#a15217d50f095c9c96ac124cf1a6a74e0',1,'jwt']]],
-  ['foreachdescendant',['ForEachDescendant',['../namespacejwt.html#a481eacee18146686e9038be82aa84349',1,'jwt']]]
+  ['button',['Button',['../structjwt_1_1_button.html#ae771eb5e2f96f772d96babecc705c2f7',1,'jwt::Button::Button(Window &amp;parent)'],['../structjwt_1_1_button.html#abf9c51ffaea29fd78540853de68b73e2',1,'jwt::Button::Button(Window &amp;parent, const std::wstring &amp;, DWORD buttonStyles=0)'],['../structjwt_1_1_button.html#ab246830468594163190a4a08bb118801',1,'jwt::Button::Button(Dialog &amp;parent, int buttonId)']]]
 ];

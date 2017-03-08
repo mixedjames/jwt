@@ -17,6 +17,8 @@ var namespacejwt =
     [ "Rebar", "structjwt_1_1_rebar.html", "structjwt_1_1_rebar" ],
     [ "Rect", "structjwt_1_1_rect.html", "structjwt_1_1_rect" ],
     [ "ScrollPane", "structjwt_1_1_scroll_pane.html", "structjwt_1_1_scroll_pane" ],
+    [ "SecondaryActionTag", "structjwt_1_1_secondary_action_tag.html", null ],
+    [ "SplitButton", "structjwt_1_1_split_button.html", "structjwt_1_1_split_button" ],
     [ "StatusBar", "structjwt_1_1_status_bar.html", "structjwt_1_1_status_bar" ],
     [ "Toolbar", "structjwt_1_1_toolbar.html", "structjwt_1_1_toolbar" ],
     [ "Window", "structjwt_1_1_window.html", "structjwt_1_1_window" ]

@@ -77,11 +77,11 @@ namespace jwt {
 
       onCommand_(CommandEvent(t, LOWORD(w), l));
 
-      if (t == CommandEvent::CONTROL) {
+      if (l) {
         ReflectMessage(h, m, w, l);
       }
     }
-                     break;
+    break;
 
     case WM_NOTIFY:
     case WM_HSCROLL:

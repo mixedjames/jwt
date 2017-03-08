@@ -9,6 +9,7 @@ var hierarchy =
     [ "jwt::MessagePump", "structjwt_1_1_message_pump.html", null ],
     [ "jwt::Point", "structjwt_1_1_point.html", null ],
     [ "jwt::Rect", "structjwt_1_1_rect.html", null ],
+    [ "jwt::SecondaryActionTag", "structjwt_1_1_secondary_action_tag.html", null ],
     [ "jwt::Window", "structjwt_1_1_window.html", [
       [ "jwt::CustomWindow< AppWindow >", "structjwt_1_1_custom_window.html", [
         [ "jwt::AppWindow", "structjwt_1_1_app_window.html", null ]
@@ -16,7 +17,9 @@ var hierarchy =
       [ "jwt::CustomWindow< ScrollPane >", "structjwt_1_1_custom_window.html", [
         [ "jwt::ScrollPane", "structjwt_1_1_scroll_pane.html", null ]
       ] ],
-      [ "jwt::Button", "structjwt_1_1_button.html", null ],
+      [ "jwt::Button", "structjwt_1_1_button.html", [
+        [ "jwt::SplitButton", "structjwt_1_1_split_button.html", null ]
+      ] ],
       [ "jwt::CustomWindow< UniqueTag >", "structjwt_1_1_custom_window.html", null ],
       [ "jwt::Dialog", "structjwt_1_1_dialog.html", null ],
       [ "jwt::Edit", "structjwt_1_1_edit.html", null ],

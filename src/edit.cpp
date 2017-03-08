@@ -22,13 +22,21 @@
 
 namespace jwt {
 
-  Edit::Edit(Window& parent) {
-    Create(parent);
+  //
+  // **************************************************
+  // Edit member function definitions
+  // **************************************************
+  //
+
+  Edit::Edit(Window& parent, const std::wstring& txt, DWORD flags) {
+    Create(parent, flags);
+    SetText(*this, txt);
   }
 
   Edit::Edit(Dialog& parent, int editId) {
     hWnd_ = parent.Item(editId);
     assert(hWnd_ != nullptr);
+    assert(ClassName(*this) == L"Edit");
 
     SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
   }
@@ -36,9 +44,9 @@ namespace jwt {
   Edit::Edit(const defer_create_t&) {
   }
 
-  void Edit::Create(Window& parent) {
+  void Edit::Create(Window& parent, DWORD flags) {
     hWnd_ = CreateWindow(
-      L"EDIT", L"", WS_VISIBLE | WS_CHILD,
+      L"EDIT", L"", WS_VISIBLE | WS_CHILD | flags,
       0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
       parent.TheHWND(), nullptr, nullptr, nullptr
     );
@@ -55,5 +63,38 @@ namespace jwt {
 
     return 0;
   }
+
+  //
+  // **************************************************
+  // Non-member Button function definitions
+  // **************************************************
+  //
+
+  std::wstring GetSelectedText(const Edit& e) {
+    auto s = GetText(e);
+    DWORD start = 0;
+    DWORD end = 0;
+
+    SendMessage(e.TheHWND(), EM_GETSEL, (WPARAM) &start, (LPARAM) &end);
+
+    return s.substr(start, end - start);
+  }
+
+  Edit& ReplaceSelectedText(Edit& e, const std::wstring& txt) {
+    SendMessage(e.TheHWND(), EM_REPLACESEL, TRUE, (LPARAM) txt.c_str());
+    return e;
+  }
+
+  std::wstring GetCueBanner(const Edit& e) {
+    wchar_t buffer[200] = {};
+    SendMessage(e.TheHWND(), EM_GETCUEBANNER, (WPARAM) buffer, sizeof(buffer) / sizeof(wchar_t));
+    return buffer;
+  }
+
+  Edit& SetCueBanner(Edit& e, const std::wstring& txt) {
+    SendMessage(e.TheHWND(), EM_SETCUEBANNER, false, (LPARAM) txt.c_str());
+    return e;
+  }
+
 
 } // namespace jwt

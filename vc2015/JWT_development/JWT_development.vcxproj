@@ -89,13 +89,16 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\jwt</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\jwt;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -121,7 +124,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\jwt</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\jwt;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +133,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -169,6 +175,9 @@
     <ClInclude Include="..\..\jwt\toolbar.hpp" />
     <ClInclude Include="..\..\jwt\window-impl.hpp" />
     <ClInclude Include="..\..\jwt\window.hpp" />
+    <ClInclude Include="..\..\tests\button-tests.hpp" />
+    <ClInclude Include="..\..\tests\edit-tests.hpp" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app-window.cpp" />
@@ -185,7 +194,15 @@
     <ClCompile Include="..\..\src\status-bar.cpp" />
     <ClCompile Include="..\..\src\toolbar.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
+    <ClCompile Include="..\..\tests\button-test.cpp" />
+    <ClCompile Include="..\..\tests\edit-tests.cpp" />
     <ClCompile Include="..\..\tests\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,8 +27,8 @@
  * window.hpp contains two things:
  * 1. Definition for struct Window
  * 2. Declarations for a series of non-member functions that manipulate
- *    Window instances through the public interface of Window & are therefore not
- *    members.
+ *    Window instances through the public interface of Window & are therefore
+ *    not members.
  */
 
 namespace jwt {
@@ -175,11 +175,18 @@ namespace jwt {
   };
 
   /**
+  * Gets the window-class name.
+  * 
+  * @return std::wstring
+  */
+  std::wstring ClassName(const Window&);
+
+  /**
    * Gets the outer size of a Window. (i.e. the size measured outside of the
    * non-client area)
    * @return Dimension
    */
-  Dimension Size(const Window&);
+  Dimension GetSize(const Window&);
 
   /**
    * Sets the outer size of a Window. (i.e. the size measured outside of the
@@ -188,14 +195,14 @@ namespace jwt {
    * @return Window& - the Window on which the function was called; allows
    *         chaining.
    */
-  Window& Size(Window&, const Dimension&);
+  Window& SetSize(Window&, const Dimension&);
 
   /**
    * Gets the client size of a Window. (i.e. the size measured inside of the
    * non-client area).
    * @return Dimension
    */
-  Dimension ClientSize(const Window&);
+  Dimension GetClientSize(const Window&);
 
   /**
    * Sets the client size of a Window. (i.e. the size measured inside of the
@@ -205,7 +212,7 @@ namespace jwt {
    * @return Window& - the Window on which the function was called; allows
    *         chaining.
    */
-  Window& ClientSize(Window&, const Dimension&);
+  Window& SetClientSize(Window&, const Dimension&);
 
   /**
    * Sets the position of a Window. The units depend on the type of Window:
@@ -215,7 +222,7 @@ namespace jwt {
    * Note that in either case the coordinates may be negative.
    * @return Point
    */
-  Point Position(const Window&);
+  Point GetPosition(const Window&);
 
   /**
    * Gets the position of a Window. The units depend on the type of Window:
@@ -227,24 +234,108 @@ namespace jwt {
    * @return Window& - the Window on which the function was called; allows
    *         chaining.
    */
-  Window& Position(Window&, const Point&);
+  Window& SetPosition(Window&, const Point&);
 
-  Rect Bounds(const Window&);
-  Window& Bounds(Window&, const Rect&);
+  /**
+   * Returns the bounding rectangle of the Window.
+   * The size is the outer size (i.e. the sum of the client and non-client
+   * areas). Coordinates are relative to the parent of child windows and
+   * relative to the screen for popup windows.
+   *
+   * @return Rect
+   */
+  Rect GetBounds(const Window&);
 
+  /**
+   * Sets the bounding rectangle of the Window.
+   * The size is the outer size (i.e. the sum of the client and non-client
+   * areas). Coordinates are relative to the parent of child windows and
+   * relative to the screen for popup windows.
+   *
+   * @return Window& The target Window; allows chaining
+   */
+  Window& SetBounds(Window&, const Rect&);
+
+  /**
+   * Returns the window style flags.
+   * Equivalent to `GetWindowLong(w.TheHWND(), GWL_STYLE);`
+   */
   inline DWORD Style(const Window& w) {
     return GetWindowLong(w.TheHWND(), GWL_STYLE);
   }
 
+  /**
+  * Returns the window style flags.
+  * Equivalent to `GetWindowLong(w.TheHWND(), GWL_STYLE);`
+  */
+  inline Window& Style(Window& w, DWORD styleMask) {
+    SetWindowLong(w.TheHWND(), GWL_STYLE, styleMask);
+    return w;
+  }
+
+  /**
+   * Returns true if the Window has the specified combination of
+   * style flags set.
+   * @return bool
+   */
+  inline bool HasStyle(const Window& w, DWORD styleMask) {
+    return (GetWindowLong(w.TheHWND(), GWL_STYLE) & styleMask) == styleMask;
+  }
+
+  /**
+   * Combines the current window style with new style mask provided.
+   */
+  inline Window& AddStyle(Window& w, DWORD styleMask) {
+    return Style(w, Style(w) | styleMask);
+  }
+
+  /**
+   * Returns the window style flags.
+   * Equivalent to `GetWindowLong(w.TheHWND(), GWL_EXSTYLE);`
+   */
   inline DWORD ExStyle(const Window& w) {
     return GetWindowLong(w.TheHWND(), GWL_EXSTYLE);
   }
 
-  std::wstring Text(const Window&);
-  Window& Text(Window&, const std::wstring&);
+  /**
+   * Returns true if the Window has the specified combination of
+   * extended style flags set.
+   * @return bool
+   */
+  inline bool HasExStyle(const Window& w, DWORD styleMask) {
+    return (GetWindowLong(w.TheHWND(), GWL_EXSTYLE) & styleMask) == styleMask;
+  }
 
-  bool Visible(const Window&);
-  Window& Visible(Window&, bool);
+  /**
+   * Returns the Window text, if present, or an emptry string otherwise.
+   * @return std::wstring
+   */
+  std::wstring GetText(const Window&);
+
+  /**
+   * Sets the Window text.
+   * @return Window& - the target Window to allowing function chaining.
+   */
+  Window& SetText(Window&, const std::wstring&);
+
+  /**
+   * Returns whether a window has the WS_VISIBLE style.
+   * This is a proxy for whether the window is visible. Clearly this does not
+   * account for other factors affecting true visibility i.e. the min-max state,
+   * any overlapping windows, or the active desktop.
+   *
+   * @return bool
+   */
+  bool IsVisible(const Window&);
+
+  /**
+   * Shows or hides the Window.
+   * Equivalent to either `ShowWindow(w.TheHWND(), SW_SHOWNORMAL : SW_HIDE);`
+   * or `ShowWindow(w.TheHWND(), SW_SHOWNORMAL : SW_SHOWNORMAL);`
+   *
+   * @return Window& - the target Window to allowing function chaining.
+   */
+  Window& SetVisible(Window&, bool);
 
   /**
    * Iterates through all the child windows of this window and calls c for

@@ -1,7 +1,7 @@
 var dir_709feb965f49d259812c99d69d24866f =
 [
     [ "app-window.hpp", "app-window_8hpp_source.html", null ],
-    [ "button.hpp", "button_8hpp_source.html", null ],
+    [ "button.hpp", "button_8hpp.html", "button_8hpp" ],
     [ "custom-window-impl.hpp", "custom-window-impl_8hpp_source.html", null ],
     [ "custom-window.hpp", "custom-window_8hpp_source.html", null ],
     [ "defer-create.hpp", "defer-create_8hpp_source.html", null ],

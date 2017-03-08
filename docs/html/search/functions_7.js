@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['window',['Window',['../structjwt_1_1_window.html#a3801af0c41d8d77fda890d685fcf3276',1,'jwt::Window']]]
+  ['isvisible',['IsVisible',['../namespacejwt.html#a8f009d317cd80f0cad961c0558bea14d',1,'jwt']]]
 ];
