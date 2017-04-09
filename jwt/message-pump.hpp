@@ -33,6 +33,9 @@ namespace jwt {
     void AddAccelerator(HACCEL);
     void RemoveAccelerator(HACCEL);
 
+    void ReportException(std::exception_ptr);
+    void RaiseReportedException();
+
   private:
     MessagePump(const MessagePump&) = delete;
     MessagePump& operator= (const MessagePump&) = delete;
@@ -40,6 +43,7 @@ namespace jwt {
     bool dlgOrAccelChanged_;
     std::vector<HWND> dialogs_;
     std::vector<HACCEL> accelerators_;
+    std::exception_ptr currentException_;
   };
 
   MessagePump& DefaultPump();

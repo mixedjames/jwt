@@ -13,15 +13,19 @@ namespace {
     EditTest()
       : d(IDD_EDITTESTS), singleLine1(d, IDC_SINGLELINE1), singleLine2(d, IDC_SINGLELINE2)
     {
-      Dialog& d = this->d;
-      Edit& singleLine1 = this->singleLine1;
-      Edit& singleLine2 = this->singleLine2;
+      d.On(Close, [this]() { SetVisible(d, false); });
 
-      d.On(Close, [&d]() { SetVisible(d, false); });
-      d.On(Command, IDC_SHOWSELECTEDTEXT, [&d, &singleLine1]() {
-        MessageBox(d.TheHWND(), GetSelectedText(singleLine1).c_str(), nullptr, MB_ICONINFORMATION);
+      d.On(Command, IDC_SHOWSELECTEDTEXT, [this]() {
+        std::wstring txt(GetSelectedText(singleLine1));
+
+        if (txt.size() > 0) {
+          MessageBox(d.TheHWND(), txt.c_str(), nullptr, MB_ICONINFORMATION);
+        }
+        else {
+          MessageBox(d.TheHWND(), L"No text was selected!", nullptr, MB_ICONERROR);
+        }
       });
-      d.On(Command, IDC_SWITCHSELECTIONS, [&singleLine1, &singleLine2]() {
+      d.On(Command, IDC_SWITCHSELECTIONS, [this]() {
         auto tmp = GetSelectedText(singleLine1);
         ReplaceSelectedText(singleLine1, GetSelectedText(singleLine2));
         ReplaceSelectedText(singleLine2, tmp);

@@ -25,8 +25,8 @@ namespace jwt {
 
   template<typename UniqueTag>
   CustomWindow<UniqueTag>::~CustomWindow() {
-    if (GetWindowLongPtr(hWnd_, GWL_USERDATA)) {
-      SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) nullptr);
+    if (GetWindowLongPtr(hWnd_, GWLP_USERDATA)) {
+      SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) nullptr);
       DestroyWindow(hWnd_);
     }
   }
@@ -68,15 +68,15 @@ namespace jwt {
         wnd = new UniqueTag(defer_create);
       }
 
-      SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR)wnd);
+      SetWindowLongPtr(h, GWLP_USERDATA, (LONG_PTR)wnd);
     }
     else if (m == WM_DESTROY) {
-      wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWL_USERDATA);
+      wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWLP_USERDATA);
       if (wnd) {
         // app != nullptr means that DestroyWindow was called externally
         // Set GWL_USERDATA to nullptr to make the destructor aware that it doesn't need to
         // destroy the window itself
-        SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR) nullptr);
+        SetWindowLongPtr(h, GWLP_USERDATA, (LONG_PTR) nullptr);
         delete wnd;
       }
       else {
@@ -86,7 +86,7 @@ namespace jwt {
       return DefWindowProc(h, m, w, l);
     }
     else {
-      wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWL_USERDATA);
+      wnd = (CustomWindow<UniqueTag>*)GetWindowLongPtr(h, GWLP_USERDATA);
     }
 
     if (wnd) {
@@ -105,7 +105,13 @@ namespace jwt {
       hWnd_ = h;
     }
 
-    return WndProc(h, m, w, l);
+    try {
+      return WndProc(h, m, w, l);
+    }
+    catch (...) {
+      DefaultPump().ReportException(std::current_exception());
+      return DefWindowProc(h, m, w, l);
+    }
   }
 
 }

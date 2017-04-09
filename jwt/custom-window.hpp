@@ -21,6 +21,7 @@
 #include <Windows.h>
 #include <assert.h>
 #include "window.hpp"
+#include "message-pump.hpp"
 
 namespace jwt {
 

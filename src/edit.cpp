@@ -38,7 +38,7 @@ namespace jwt {
     assert(hWnd_ != nullptr);
     assert(ClassName(*this) == L"Edit");
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   Edit::Edit(const defer_create_t&) {
@@ -52,7 +52,7 @@ namespace jwt {
     );
     assert(hWnd_ != nullptr);
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   LRESULT Edit::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {

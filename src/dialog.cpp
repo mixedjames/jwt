@@ -34,7 +34,7 @@ namespace jwt {
   }
 
   Dialog::~Dialog() {
-    if (hWnd_ && GetWindowLongPtr(hWnd_, GWL_USERDATA)) {
+    if (hWnd_ && GetWindowLongPtr(hWnd_, GWLP_USERDATA)) {
       DefaultPump().RemoveDialog(hWnd_);
       DestroyWindow(hWnd_);
     }
@@ -63,6 +63,7 @@ namespace jwt {
       DlgProcAdapter,
       (LPARAM) this
     );
+    DefaultPump().RaiseReportedException();
     DefaultPump().AddDialog(hWnd_);
   }
 
@@ -102,7 +103,13 @@ namespace jwt {
       hWnd_ = h;
     }
 
-    return DlgProc(h, m, w, l);
+    try {
+      return DlgProc(h, m, w, l);
+    }
+    catch (...) {
+      DefaultPump().ReportException(std::current_exception());
+      return FALSE;
+    }
   }
 
   INT_PTR CALLBACK Dialog::DlgProcAdapter(HWND h, UINT m, WPARAM w, LPARAM l) {
@@ -110,10 +117,10 @@ namespace jwt {
 
     if (m == WM_INITDIALOG) {
       dlg = (Dialog*)l;
-      SetWindowLongPtr(h, GWL_USERDATA, (LONG_PTR)dlg);
+      SetWindowLongPtr(h, GWLP_USERDATA, (LONG_PTR)dlg);
     }
     else {
-      dlg = (Dialog*)GetWindowLongPtr(h, GWL_USERDATA);
+      dlg = (Dialog*)GetWindowLongPtr(h, GWLP_USERDATA);
     }
 
     if (dlg) {

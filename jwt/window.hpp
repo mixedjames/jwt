@@ -175,6 +175,16 @@ namespace jwt {
   };
 
   /**
+   *
+   */
+  LRESULT SafeSendMessage(Window&, UINT, WPARAM, LPARAM);
+
+  /**
+  *
+  */
+  LRESULT SafeSendMessage(const Window&, UINT, WPARAM, LPARAM);
+
+  /**
   * Gets the window-class name.
   * 
   * @return std::wstring

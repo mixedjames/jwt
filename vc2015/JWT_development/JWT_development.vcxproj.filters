@@ -93,6 +93,15 @@
     <ClInclude Include="..\..\tests\edit-tests.hpp">
       <Filter>Header Files\tests</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\tests\list-tests.hpp">
+      <Filter>Header Files\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\list-box-impl.hpp">
+      <Filter>Header Files\jwt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\scroll-pane-tests.hpp">
+      <Filter>Header Files\tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\window.cpp">
@@ -144,6 +153,12 @@
       <Filter>Source Files\tests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tests\edit-tests.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\list-tests.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\scroll-pane-tests.cpp">
       <Filter>Source Files\tests</Filter>
     </ClCompile>
   </ItemGroup>

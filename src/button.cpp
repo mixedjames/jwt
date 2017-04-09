@@ -44,7 +44,7 @@ namespace jwt {
     auto s = ClassName(*this);
     assert(ClassName(*this) == L"Button");
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   Button::Button(const defer_create_t&) {
@@ -58,7 +58,7 @@ namespace jwt {
     );
     assert(hWnd_ != nullptr);
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   LRESULT Button::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {

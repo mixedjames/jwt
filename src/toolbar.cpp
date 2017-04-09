@@ -35,10 +35,10 @@ namespace jwt {
       id
     };
 
-    int index = SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
+    LRESULT index = SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
     assert(index != -1);
 
-    return index;
+    return (int) index;
   }
 
   int Toolbar::AddBitmapResource(UINT id) {
@@ -47,7 +47,7 @@ namespace jwt {
       id
     };
 
-    int index = SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
+    int index = (int) SendMessage(hWnd_, TB_ADDBITMAP, 0, (WPARAM)&addBmp);
     assert(index != -1);
 
     return index;

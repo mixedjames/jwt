@@ -25,6 +25,7 @@ namespace jwt {
     struct Callback {
       Callable callback;
       HWND parent;
+      std::exception_ptr reportedException;
 
       Callback(Callable c, HWND h) : callback(c), parent(h) {}
     } callback(c, w.TheHWND());
@@ -33,12 +34,22 @@ namespace jwt {
       Callback* callback = (Callback*)l;
 
       if (GetAncestor(h, GA_PARENT) == callback->parent) {
-        callback->callback(h);
+        try {
+          callback->callback(h);
+        }
+        catch (...) {
+          callback->reportedException = std::current_exception();
+          return FALSE;
+        }
       }
       return TRUE;
     };
 
     EnumChildWindows(w.TheHWND(), ep, (LPARAM)&callback);
+    if (callback.reportedException) {
+      std::rethrow_exception(callback.reportedException);
+    }
+
     return w;
   }
 
@@ -46,18 +57,30 @@ namespace jwt {
   Window& ForEachDescendant(Window&, Callable c) {
     struct Callback {
       Callable callback;
-      HWND parent;
+      std::exception_ptr reportedException;
 
-      Callback(Callable c, HWND h) : callback(c), parent(h) {}
-    } callback(c, w.TheHWND());
+      Callback(Callable c, HWND h) : callback(c) {}
+    } callback(c);
 
     WNDENUMPROC ep = [](HWND h, LPARAM l) {
       Callback* callback = (Callback*)l;
-      callback->callback(h);
+
+      try {
+        callback->callback(h);
+      }
+      catch (...) {
+        callback->reportedException = std::current_exception();
+        return FALSE;
+      }
+
       return TRUE;
     };
 
     EnumChildWindows(w.TheHWND(), ep, (LPARAM)&callback);
+    if (callback.reportedException) {
+      std::rethrow_exception(callback.reportedException);
+    }
+
     return w;
   }
 }

@@ -31,7 +31,7 @@ namespace jwt {
     hWnd_ = parent.Item(statusbarId);
     assert(hWnd_ != nullptr);
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   StatusBar::StatusBar(const defer_create_t&) {
@@ -45,7 +45,7 @@ namespace jwt {
     );
     assert(hWnd_ != nullptr);
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   LRESULT StatusBar::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {

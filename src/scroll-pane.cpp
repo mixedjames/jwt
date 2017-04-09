@@ -48,6 +48,9 @@ namespace jwt {
       0, 0, 0, 0,
       parent.TheHWND(), nullptr, GetModuleHandle(nullptr), (LPVOID) this
     );
+    DefaultPump().RaiseReportedException();
+
+    assert(hWnd_);
   }
 
   LRESULT ScrollPane::WndProc(HWND h, UINT m, WPARAM w, LPARAM l) {

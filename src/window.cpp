@@ -19,6 +19,7 @@
 
 #include "libraries.hpp"
 #include "window.hpp"
+#include "message-pump.hpp"
 #include <assert.h>
 
 namespace jwt {
@@ -36,13 +37,13 @@ namespace jwt {
     case WM_VSCROLL:
     case WM_HSCROLL:
       if (l) {
-        wnd = (Window*)GetWindowLongPtr((HWND)l, GWL_USERDATA);
+        wnd = (Window*)GetWindowLongPtr((HWND)l, GWLP_USERDATA);
       }
       break;
 
     case WM_NOTIFY: {
       NMHDR* hdr = (NMHDR*)l;
-      wnd = (Window*)GetWindowLong(hdr->hwndFrom, GWL_USERDATA);
+      wnd = (Window*)GetWindowLongPtr(hdr->hwndFrom, GWLP_USERDATA);
     }
     break;
 
@@ -70,8 +71,23 @@ namespace jwt {
   // **************************************************
   //
 
+  LRESULT SafeSendMessage(Window& wnd, UINT m, WPARAM w, LPARAM l) {
+    LRESULT lr = SendMessage(wnd.TheHWND(), m, w, l);
+    DefaultPump().RaiseReportedException();
+    return lr;
+  }
+
+  LRESULT SafeSendMessage(const Window& wnd, UINT m, WPARAM w, LPARAM l) {
+    LRESULT lr = SendMessage(wnd.TheHWND(), m, w, l);
+    DefaultPump().RaiseReportedException();
+    return lr;
+  }
+
   std::wstring ClassName(const Window& w) {
     assert(w.TheHWND() != nullptr);
+
+    // FIXME: currently implemented using a fixed-size buffer.
+    //        would be better if we dynamically allocated this somehow.
 
     wchar_t buffer[200] = {};
     GetClassName(w.TheHWND(), buffer, sizeof(buffer)/sizeof(wchar_t));
@@ -147,6 +163,9 @@ namespace jwt {
     RECT r = {};
     GetWindowRect(w.TheHWND(), &r);
 
+    // GetWindowRect always returns screen coordinates. See GetBounds
+    // impl. for the altered symantics we provide.
+
     if (HasStyle(w, WS_CHILD)) {
       POINT topLeft = { r.left, r.top };
       ScreenToClient(w.TheHWND(), &topLeft);
@@ -171,6 +190,14 @@ namespace jwt {
 
   Rect GetBounds(const Window& w) {
     assert(w.TheHWND() != nullptr);
+
+    // GetWindowRect always returns screen coordinates, however we try
+    // to implement slightly more helpful (if (?)less consistent) symantics:
+    //   - Top level window bounds are specified in screen coordinates
+    //   - Child window bounds are specified in the coordinates of their parent
+    //
+    // So, if w is a child window, we have to call ScreenToClient to perform
+    // the conversion.
 
     RECT r = {};
     GetWindowRect(w.TheHWND(), &r);
@@ -201,10 +228,28 @@ namespace jwt {
   }
 
   std::wstring GetText(const Window& w) {
+    // Making GetWindowText play nicely with standard C++ strings is
+    // a tad more complicated than would be ideal - problems are:
+    // (a) Although wstrings are null terminated in practice, the null character
+    //     is is memory that is not accessible to the application
+    // (b) Some methods (i.e. standard streams) use the actual length of the string,
+    //     not the strlen(...) length, and these methods get confused if an
+    //     additional null is present (i.e. wcout prints a blank character)
+    //
+    // Strategy we adopt is therefore slightly nuanced...
+    // (a) First create a string big enough for the whole window text including
+    //     a terminating null & call GetWindowText using this
+    // (b) If a non-empty string was returned, the string is resized to lose the
+    //     final character.
+
     assert(w.TheHWND() != nullptr);
 
-    std::wstring txt(' ', GetWindowTextLength(w.TheHWND()));
-    GetWindowText(w.TheHWND(), &*txt.begin(), txt.size());
+    std::wstring txt(GetWindowTextLength(w.TheHWND()) + 1, ' ');
+    GetWindowText(w.TheHWND(), &*txt.begin(), (int) txt.size());
+
+    if (txt.size() > 0) {
+      txt.resize(txt.size() - 1);
+    }
 
     return txt;
   }

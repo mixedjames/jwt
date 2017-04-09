@@ -42,6 +42,7 @@ namespace jwt {
         HWND d = dialogs_[i];
         if (d && IsDialogMessage(d, &m)) {
           msgHandled = true;
+          RaiseReportedException();
           break;
         }
       }
@@ -60,6 +61,7 @@ namespace jwt {
       if (!msgHandled) {
         TranslateMessage(&m);
         DispatchMessage(&m);
+        RaiseReportedException();
       }
 
       if (dlgOrAccelChanged_) {
@@ -76,7 +78,7 @@ namespace jwt {
         dlgOrAccelChanged_ = false;
       }
     }
-    return m.wParam;
+    return (int) m.wParam;
   }
 
   void MessagePump::AddDialog(HWND h) {
@@ -107,6 +109,19 @@ namespace jwt {
     dlgOrAccelChanged_ = true;
   }
 
+  void MessagePump::ReportException(std::exception_ptr e) {
+    assert(!currentException_);
+
+    currentException_ = e;
+  }
+
+  void MessagePump::RaiseReportedException() {
+    if (currentException_) {
+      std::exception_ptr e = currentException_;
+      currentException_ = nullptr;
+      std::rethrow_exception(e);
+    }
+  }
 
   MessagePump& DefaultPump() {
     if (!defaultPump_) {

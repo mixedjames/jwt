@@ -21,7 +21,7 @@
 /**
   @namespace jwt
   `namespace jwt` holds all of the classes and functions that make up
-  James' Windows Toolkit. Use `#include <jwt/jwt.ghp>` to use JWT in your
+  James' Windows Toolkit. Use `#include <jwt/jwt.hpp>` to use JWT in your
   project.
 */
 

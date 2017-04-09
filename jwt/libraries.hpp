@@ -26,6 +26,7 @@
 
 #include <string>
 #include <vector>
+#include <exception>
 #include <Windows.h>
 #include <CommCtrl.h>
 #include <boost/signals2.hpp>

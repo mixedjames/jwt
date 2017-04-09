@@ -4,6 +4,8 @@
 
 #include "button-tests.hpp"
 #include "edit-tests.hpp"
+#include "list-tests.hpp"
+#include "scroll-pane-tests.hpp"
 
 #include <iostream>
 #include <memory>
@@ -17,6 +19,8 @@ int Start() {
   d.On(Close, []() { PostQuitMessage(0); });
   d.On(Command, IDC_BUTTONTESTS, ShowButtonTests);
   d.On(Command, IDC_EDITTESTS, ShowEditTests);
+  d.On(Command, IDC_LISTTESTS, ShowListTests);
+  d.On(Command, IDC_SCROLLPANETESTS, ShowScrollPaneTests);
 
   SetVisible(d, true);
 

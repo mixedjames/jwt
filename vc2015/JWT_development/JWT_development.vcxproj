@@ -166,6 +166,7 @@
     <ClInclude Include="..\..\jwt\event-types.hpp" />
     <ClInclude Include="..\..\jwt\jwt.hpp" />
     <ClInclude Include="..\..\jwt\libraries.hpp" />
+    <ClInclude Include="..\..\jwt\list-box-impl.hpp" />
     <ClInclude Include="..\..\jwt\list-box.hpp" />
     <ClInclude Include="..\..\jwt\measurement.hpp" />
     <ClInclude Include="..\..\jwt\message-pump.hpp" />
@@ -177,6 +178,8 @@
     <ClInclude Include="..\..\jwt\window.hpp" />
     <ClInclude Include="..\..\tests\button-tests.hpp" />
     <ClInclude Include="..\..\tests\edit-tests.hpp" />
+    <ClInclude Include="..\..\tests\list-tests.hpp" />
+    <ClInclude Include="..\..\tests\scroll-pane-tests.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -196,7 +199,9 @@
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\tests\button-test.cpp" />
     <ClCompile Include="..\..\tests\edit-tests.cpp" />
+    <ClCompile Include="..\..\tests\list-tests.cpp" />
     <ClCompile Include="..\..\tests\main.cpp" />
+    <ClCompile Include="..\..\tests\scroll-pane-tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

@@ -32,15 +32,6 @@ namespace jwt {
     ListBox(Window& parent);
     ListBox(Dialog& parent, int buttonId);
 
-    ListBox& Add(const std::wstring&);
-    ListBox& Insert(int index, const std::wstring&);
-    ListBox& Delete(int index);
-
-    int Count() const;
-
-    int SelectedIndex() const;
-    std::vector<int> SelectedIndices() const;
-
   protected:
     ListBox(const defer_create_t&);
 
@@ -51,4 +42,21 @@ namespace jwt {
   private:
   };
 
+  ListBox& AddString(ListBox&, const std::wstring&);
+  ListBox& InsertString(ListBox&, int index, const std::wstring&);
+
+  ListBox& DeleteString(ListBox&, int index);
+
+  template<typename Container>
+  ListBox& DeleteStrings(ListBox& l, const Container& indices);
+
+  std::wstring GetString(ListBox&, int index);
+
+
+  int Count(ListBox&);
+
+  int SelectedIndex(const ListBox&);
+  std::vector<int> SelectedIndices(const ListBox&);
 }
+
+#include "list-box-impl.hpp"

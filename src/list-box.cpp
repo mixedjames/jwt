@@ -23,6 +23,12 @@
 
 namespace jwt {
 
+  //
+  // **************************************************
+  // ListBox member function definitions
+  // **************************************************
+  //
+
   ListBox::ListBox(Window& parent) {
     Create(parent);
   }
@@ -31,56 +37,11 @@ namespace jwt {
     hWnd_ = parent.Item(listId);
     assert(hWnd_ != nullptr);
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   ListBox::ListBox(const defer_create_t&) {
   }
-
-  ListBox& ListBox::Add(const std::wstring& s) {
-    assert(hWnd_ != nullptr);
-
-    SendMessage(hWnd_, LB_ADDSTRING, 0, (LPARAM)s.c_str());
-    return *this;
-  }
-
-  ListBox& ListBox::Insert(int index, const std::wstring& s) {
-    assert(hWnd_ != nullptr);
-
-    SendMessage(hWnd_, LB_INSERTSTRING, index, (LPARAM)s.c_str());
-    return *this;
-  }
-
-  ListBox& ListBox::Delete(int index) {
-    assert(hWnd_ != nullptr);
-
-    SendMessage(hWnd_, LB_DELETESTRING, index, 0);
-    return *this;
-  }
-
-  int ListBox::Count() const {
-    assert(hWnd_ != nullptr);
-    return SendMessage(hWnd_, LB_GETCOUNT, 0, 0);
-  }
-
-  int ListBox::SelectedIndex() const {
-    assert(hWnd_ != nullptr);
-    return SendMessage(hWnd_, LB_GETCURSEL, 0, 0);
-  }
-
-  std::vector<int> ListBox::SelectedIndices() const {
-    assert(hWnd_ != nullptr);
-
-    int l = SendMessage(hWnd_, LB_GETSELCOUNT, 0, 0);
-    if (l == LB_ERR) {
-      throw "LB_GETSELCOUNT failed.";
-    }
-
-    std::vector<int> v(l, -1);
-    SendMessage(hWnd_, LB_GETSELITEMS, l, (LPARAM) &*v.begin());
-    return v;
-  }
-
 
   void ListBox::Create(Window& parent) {
     hWnd_ = CreateWindow(
@@ -90,7 +51,7 @@ namespace jwt {
     );
     assert(hWnd_ != nullptr);
 
-    SetWindowLongPtr(hWnd_, GWL_USERDATA, (LONG_PTR) this);
+    SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
 
   LRESULT ListBox::HandleReflectedMessage(HWND h, UINT m, WPARAM w, LPARAM l) {
@@ -100,6 +61,93 @@ namespace jwt {
     }
 
     return 0;
+  }
+
+  //
+  // **************************************************
+  // Non-member ListBox function definitions
+  // **************************************************
+  //
+
+  ListBox& AddString(ListBox& l, const std::wstring& s) {
+    assert(l.TheHWND() != nullptr);
+
+    SendMessage(l.TheHWND(), LB_ADDSTRING, 0, (LPARAM)s.c_str());
+    return l;
+  }
+
+  ListBox& InsertString(ListBox& l, int index, const std::wstring& s) {
+    assert(l.TheHWND() != nullptr);
+
+    SendMessage(l.TheHWND(), LB_INSERTSTRING, index, (LPARAM)s.c_str());
+    return l;
+  }
+
+  ListBox& DeleteString(ListBox& l, int index) {
+    assert(l.TheHWND() != nullptr);
+
+    SendMessage(l.TheHWND(), LB_DELETESTRING, index, 0);
+    return l;
+  }
+
+  std::wstring GetString(ListBox& l, int index) {
+    assert(l.TheHWND());
+    
+    int length = SendMessage(l.TheHWND(), LB_GETTEXTLEN, index, 0);
+    if (length == LB_ERR) {
+      // FIXME: should throw something more useful
+      throw "LB_GETTEXTLEN failed.";
+    }
+
+    std::wstring s(length + 1, ' ');
+    SendMessage(l.TheHWND(), LB_GETTEXT, index, (LPARAM) &*s.begin());
+
+    if (s.size() > 0) {
+      s.resize(s.size() - 1);
+    }
+
+    return s;
+  }
+
+  int Count(ListBox& l) {
+    assert(l.TheHWND() != nullptr);
+    return (int)SendMessage(l.TheHWND(), LB_GETCOUNT, 0, 0);
+  }
+
+  int SelectedIndex(const ListBox& l) {
+    assert(l.TheHWND() != nullptr);
+    assert(!HasStyle(l, LBS_MULTIPLESEL));
+
+    return (int) SendMessage(l.TheHWND(), LB_GETCURSEL, 0, 0);
+  }
+
+  std::vector<int> SelectedIndices(const ListBox& l) {
+    assert(l.TheHWND() != nullptr);
+    assert(HasStyle(l, LBS_MULTIPLESEL));
+
+    int length = (int) SendMessage(l.TheHWND(), LB_GETSELCOUNT, 0, 0);
+    if (length == LB_ERR) {
+      // FIXME: should throw something more useful
+      throw "LB_GETSELCOUNT failed.";
+    }
+    else if (length == 0) {
+      return std::vector<int>();
+    }
+
+    std::vector<int> v(length, -1);
+    SendMessage(l.TheHWND(), LB_GETSELITEMS, length, (LPARAM) &*v.begin());
+
+    // Note: this might not be required
+    //
+    // I do this to ensure compatability with DeleteStrings which assumes that
+    // indices are in ascending order. I *think* LB_GETSELITEMS does this anyway
+    // but I can't find a guarentee in the docs. Since a call to sort
+    // on most typical selection lists is likely to be cost-irrelevant
+    // I figured this is a reasonable way to go. Your mileage may vary...
+    //
+    std::sort(begin(v), end(v), std::less<int>());
+
+    return v;
   }
 
 } // namespace jwt

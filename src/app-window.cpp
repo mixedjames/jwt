@@ -49,7 +49,7 @@ namespace jwt {
       CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
       nullptr, nullptr, GetModuleHandle(nullptr), (void*) this
     );
-
+    DefaultPump().RaiseReportedException();
     assert(hWnd_ != nullptr);
   }
 
@@ -91,7 +91,7 @@ namespace jwt {
         RECT* r = (RECT*)l;
         Rect r2(*r);
 
-        sizePolicy_(w, r2);
+        sizePolicy_((unsigned int) w, r2);
 
         *r = (RECT)r2;
       }
