@@ -273,4 +273,25 @@ namespace jwt {
     ShowWindow(w.TheHWND(), (visible) ? SW_SHOWNORMAL : SW_HIDE);
     return w;
   }
+
+  Dimension CalculateExtentOfChildren(const Window& w) {
+    Dimension extent;
+
+    // Note: this const_cast if safe because ForEachChild promises not
+    //       to mutate the target Window& unless the specified callback does.
+    //       Since we control the callback & we don't mess with it then
+    //       we are ok.
+    //
+    ForEachChild(const_cast<Window&>(w), [&w, &extent](HWND h) {
+      RECT r;
+      GetClientRect(h, &r);
+      MapWindowPoints(h, w.TheHWND(), (POINT*)&r, 2);
+
+      extent.w = (extent.w < r.right) ? r.right : extent.w;
+      extent.h = (extent.h < r.bottom) ? r.bottom : extent.h;
+    });
+
+    return extent;
+  }
+
 } // namespace jwt

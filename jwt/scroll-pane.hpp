@@ -23,22 +23,43 @@
 
 namespace jwt {
 
+  /**
+   * ScrollPane encapsulates a Window that manages a pair of scrollbars.
+   *
+   * 
+   */
   struct ScrollPane
     : CustomWindow<ScrollPane>
   {
+    typedef std::function<void (ScrollPane&, const Point&, const Point&)> ScrollPolicyT;
+
     friend struct CustomWindow<ScrollPane>;
     static const wchar_t* CLASS_NAME;
 
     static void Register();
 
     explicit ScrollPane(Window& parent);
-
-    ScrollPane& CalculateScrollableExtent();
+    
     const Point& Position() const { return position_; }
+    ScrollPane& Position(const Point&);
+    
     const Dimension& Extent() const { return extent_; }
+    ScrollPane& Extent(const Dimension&);
 
     bool AlwaysOn() const { return !!(flags_ & ALWAYS_ON); }
     ScrollPane& AlwaysOn(bool b);
+
+    const Dimension LineIncrement() const { return lineIncrement_; }
+    ScrollPane& LineIncrement(const Dimension&);
+
+    const Dimension PageIncrement() const { return pageIncrement_; }
+    ScrollPane& PageIncrement(const Dimension&);
+
+    template<typename Callback>
+    ScrollPane& ScrollPolicy(Callback policy) {
+      scrollPolicy_ = policy;
+      return *this;
+    }
 
   protected:
     explicit ScrollPane(const defer_create_t&);
@@ -55,11 +76,19 @@ namespace jwt {
     Point position_;
     unsigned int flags_;
 
+    Dimension lineIncrement_;
+    Dimension pageIncrement_;
+
+    ScrollPolicyT scrollPolicy_;
+
     void ConfigScrollbars();
     void ConfigOptionalScrollbars();
     void ConfigAlwaysOnScrollbars();
+    void CommonConfigScrollbars();
+
     void HandleHScroll(int action);
     void HandleVScroll(int action);
   };
 
+  void DefaultScrollPolicy(ScrollPane&, const Point&, const Point&);
 }

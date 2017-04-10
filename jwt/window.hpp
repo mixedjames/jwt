@@ -366,6 +366,9 @@ namespace jwt {
   */
   template<typename Callable>
   Window& ForEachDescendant(Window&, Callable c);
+
+
+  Dimension CalculateExtentOfChildren(const Window&);
 }
 
 #include "window-impl.hpp"

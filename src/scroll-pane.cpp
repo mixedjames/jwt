@@ -31,13 +31,13 @@ namespace jwt {
   }
 
   ScrollPane::ScrollPane(Window& parent)
-    : flags_(0)
+    : flags_(0), lineIncrement_(1, 1), pageIncrement_(-1, -1), scrollPolicy_(DefaultScrollPolicy)
   {
     Create(parent);
   }
 
   ScrollPane::ScrollPane(const defer_create_t&)
-    : flags_(0)
+    : flags_(0), lineIncrement_(1, 1), pageIncrement_(-1, -1), scrollPolicy_(DefaultScrollPolicy)
   {
   }
 
@@ -71,16 +71,36 @@ namespace jwt {
     return CustomWindow<ScrollPane>::WndProc(h, m, w, l);
   }
 
-  ScrollPane& ScrollPane::CalculateScrollableExtent() {
-    ForEachChild(*this, [this](HWND h) {
-      RECT r;
-      GetClientRect(h, &r);
-      MapWindowPoints(h, hWnd_, (POINT*)&r, 2);
+  ScrollPane& ScrollPane::Position(const Point& position) {
+    Dimension vSize = GetClientSize(*this);
+    Point dP = position_;
 
-      extent_.w = (extent_.w < r.right) ? r.right : extent_.w;
-      extent_.h = (extent_.h < r.bottom) ? r.bottom : extent_.h;
-    });
+    position_ = position;
 
+    // Note: extra parentheses are required - windows headers define max/min macros
+    // which munch the std:: C++ ones; the extra brackets prevent this. I don't want
+    // to compile with wierd macros if I can avoid it so this seemed better than using
+    // #define NO_MINMAX
+    //
+
+    position_.x = (std::min)(position_.x, extent_.w - vSize.w);
+    position_.x = (std::max)(position_.x, 0);
+
+    position_.y = (std::min)(position_.y, extent_.h - vSize.h);
+    position_.y = (std::max)(position_.y, 0);
+
+    dP.x = position_.x - dP.x;
+    dP.y = position_.y - dP.y;
+
+    CommonConfigScrollbars();
+
+    scrollPolicy_(*this, position_, dP);
+    return *this;
+  }
+
+  ScrollPane& ScrollPane::Extent(const Dimension& extent) {
+    extent_ = extent;
+    ConfigScrollbars();
     return *this;
   }
 
@@ -95,6 +115,16 @@ namespace jwt {
     return *this;
   }
 
+  ScrollPane& ScrollPane::LineIncrement(const Dimension& newIncrement) {
+    lineIncrement_ = newIncrement;
+    return *this;
+  }
+
+  ScrollPane& ScrollPane::PageIncrement(const Dimension& newIncrement) {
+    pageIncrement_ = newIncrement;
+    return *this;
+  }
+
   void ScrollPane::ConfigScrollbars() {
     if (AlwaysOn()) {
       ConfigAlwaysOnScrollbars();
@@ -104,50 +134,25 @@ namespace jwt {
     }
   }
 
+  // Basic pattern common to both always-on & as-needed bars:
+  // (1) Decide if you need the scrollbars (always yes in this case)
+  // (2) Call CommonConfigScrollbars() to ensure scrollbars represent
+  //     the current extent and make sure the current scroll region is
+  //     valid - i.e. no scroll when content smaller than viewport etc.
+  //
   void ScrollPane::ConfigAlwaysOnScrollbars() {
     ShowScrollBar(hWnd_, SB_HORZ, true);
     ShowScrollBar(hWnd_, SB_VERT, true);
 
-    Dimension size = GetClientSize(*this);
-    SCROLLINFO si = {};
-
-    si.cbSize = sizeof(SCROLLINFO);
-    si.fMask = SIF_RANGE | SIF_PAGE;
-
-    si.nMin = 0;
-    si.nMax = extent_.w;
-    si.nPage = size.w;
-    SetScrollInfo(hWnd_, SB_HORZ, &si, TRUE);
-
-    if (extent_.w <= size.w) {
-      ScrollWindow(hWnd_, -position_.x, 0, nullptr, nullptr);
-      position_.x = 0;
-    }
-    else if (extent_.w + position_.x < size.w) {
-      int dx = size.w - extent_.w - position_.x;
-      position_.x = size.w - extent_.w;
-      ScrollWindow(hWnd_, dx, 0, nullptr, nullptr);
-    }
-
-    si.nMin = 0;
-    si.nMax = extent_.h;
-    si.nPage = size.h;
-    SetScrollInfo(hWnd_, SB_VERT, &si, TRUE);
-
-    if (extent_.h <= size.h) {
-      ScrollWindow(hWnd_, -position_.y, 0, nullptr, nullptr);
-      position_.y = 0;
-    }
-    else if (extent_.h + position_.y < size.h) {
-      int dy = size.h - extent_.h - position_.y;
-      position_.y = size.h - extent_.h;
-
-      ScrollWindow(hWnd_, 0, dy, nullptr, nullptr);
-    }
-
-    UpdateWindow(hWnd_);
+    CommonConfigScrollbars();
   }
 
+  // Basic pattern common to both always-on & as-needed bars:
+  // (1) Decide if you need the scrollbars
+  // (2) Call CommonConfigScrollbars() to ensure scrollbars represent
+  //     the current extent and make sure the current scroll region is
+  //     valid - i.e. no scroll when content smaller than viewport etc.
+  //
   void ScrollPane::ConfigOptionalScrollbars() {
     Dimension outerSize = GetSize(*this);
     Dimension innerSize(
@@ -180,8 +185,13 @@ namespace jwt {
     }
     UpdateWindow(hWnd_);
 
-    innerSize = GetClientSize(*this);
+    CommonConfigScrollbars();
+  }
 
+  void ScrollPane::CommonConfigScrollbars() {
+    SCROLLINFO si = {};
+    Dimension innerSize = GetClientSize(*this);
+    
     si.cbSize = sizeof(SCROLLINFO);
     si.fMask = SIF_RANGE | SIF_PAGE;
     si.nMin = 0;
@@ -194,31 +204,40 @@ namespace jwt {
     si.nPage = innerSize.h;
     SetScrollInfo(hWnd_, SB_VERT, &si, TRUE);
 
-    if (position_.x + extent_.w < innerSize.w) {
-      if (position_.x < 0) {
-        int dx = innerSize.w - extent_.w - position_.x;
+    if (extent_.w <= innerSize.w) {
+      // Content width is smaller than or equal to the viewport width...
+      // Scroll to x=0
 
-        position_.x += dx;
-        ScrollWindow(hWnd_, dx, 0, nullptr, nullptr);
-      }
-      else {
-        ScrollWindow(hWnd_, -position_.x, 0, nullptr, nullptr);
-        position_.x = 0;
-      }
+      Point deltaP(-position_.x, 0);
+      position_.x = 0;
+      scrollPolicy_(*this, position_, deltaP);
+    }
+    else if (extent_.w - position_.x < innerSize.w) {
+      // Width of content is greater than viewport width BUT scrolling
+      // has put the rightmost edge within the viewport.
+      //
+      // In this case, we should adjust the scroll position so that
+      // the right edge matches the edge of the viewport
+
+      Point deltaP(extent_.w - innerSize.w - position_.x, 0);
+      position_.x = extent_.w - innerSize.w;
+
+      scrollPolicy_(*this, position_, deltaP);
     }
 
-    if (position_.y + extent_.h < innerSize.h) {
-      if (position_.y < 0) {
-        int dy = innerSize.h - extent_.h - position_.y;
+    if (extent_.h <= innerSize.h) {
+      Point deltaP(0, -position_.y);
+      position_.y = 0;
 
-        position_.y += dy;
-        ScrollWindow(hWnd_, 0, dy, nullptr, nullptr);
-      }
-      else {
-        ScrollWindow(hWnd_, 0, -position_.y, nullptr, nullptr);
-        position_.y = 0;
-      }
+      scrollPolicy_(*this, position_, deltaP);
     }
+    else if (extent_.h - position_.y < innerSize.h) {
+      Point deltaP(0, extent_.h - innerSize.h - position_.y);
+      position_.y = extent_.h - innerSize.h;
+
+      scrollPolicy_(*this, position_, deltaP);
+    }
+
   }
 
   void ScrollPane::HandleHScroll(int action) {
@@ -230,19 +249,19 @@ namespace jwt {
 
     switch (action) {
     case SB_LINELEFT:
-      si.nPos -= 1;
+      si.nPos -= lineIncrement_.w;
       break;
 
     case SB_LINERIGHT:
-      si.nPos += 1;
+      si.nPos += lineIncrement_.w;
       break;
 
     case SB_PAGELEFT:
-      si.nPos -= si.nPage;
+      si.nPos -= (pageIncrement_.w != -1) ? pageIncrement_.w : si.nPage;
       break;
 
     case SB_PAGERIGHT:
-      si.nPos += si.nPage;
+      si.nPos += (pageIncrement_.w != -1) ? pageIncrement_.w : si.nPage;
       break;
 
     case SB_THUMBTRACK:
@@ -255,10 +274,11 @@ namespace jwt {
     GetScrollInfo(hWnd_, SB_HORZ, &si);
 
     if (si.nPos != position_.x) {
-      ScrollWindow(hWnd_, -position_.x - si.nPos, 0, nullptr, nullptr);
-      UpdateWindow(hWnd_);
+      Point deltaP(si.nPos - position_.x, 0);
+      position_.x = si.nPos;
 
-      position_.x = -si.nPos;
+      scrollPolicy_(*this, position_, deltaP);
+      UpdateWindow(hWnd_);
     }
   }
 
@@ -271,19 +291,19 @@ namespace jwt {
 
     switch (action) {
     case SB_LINEUP:
-      si.nPos -= 1;
+      si.nPos -= lineIncrement_.h;
       break;
 
     case SB_LINEDOWN:
-      si.nPos += 1;
+      si.nPos += lineIncrement_.h;
       break;
 
     case SB_PAGEUP:
-      si.nPos -= si.nPage;
+      si.nPos -= (pageIncrement_.h == -1) ? pageIncrement_.h : si.nPage;
       break;
 
     case SB_PAGEDOWN:
-      si.nPos += si.nPage;
+      si.nPos += (pageIncrement_.h == -1) ? pageIncrement_.h : si.nPage;
       break;
 
     case SB_THUMBTRACK:
@@ -296,10 +316,20 @@ namespace jwt {
     GetScrollInfo(hWnd_, SB_VERT, &si);
 
     if (si.nPos != position_.y) {
-      ScrollWindow(hWnd_, 0, -position_.y - si.nPos, nullptr, nullptr);
-      UpdateWindow(hWnd_);
+      Point deltaP(0, si.nPos - position_.y);
+      position_.y = si.nPos;
 
-      position_.y = -si.nPos;
+      scrollPolicy_(*this, position_, deltaP);
+      UpdateWindow(hWnd_);
+    }
+  }
+
+  //
+  // Non-member ScrollPane functions
+  //
+  void DefaultScrollPolicy(ScrollPane& pane, const Point& p, const Point& dp) {
+    if (dp.x || dp.y) {
+      ScrollWindow(pane.TheHWND(), -dp.x, -dp.y, nullptr, nullptr);
     }
   }
 

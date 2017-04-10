@@ -1,6 +1,8 @@
 #include "jwt.hpp"
 #include "resource.h"
 
+#include <iostream>
+
 using namespace jwt;
 
 namespace {
@@ -22,7 +24,7 @@ namespace {
       });
 
       scrollPane_.AlwaysOn(false);
-      scrollPane_.CalculateScrollableExtent();
+      scrollPane_.Extent(CalculateExtentOfChildren(scrollPane_));
 
       SetClientSize(w_, GetSize(d_));
 
@@ -50,6 +52,15 @@ namespace {
       
       w_.On(Command, ID_CLOSE, [this]() {
         SetVisible(w_, false);
+      });
+
+      d_.On(Command, ID_SCROLLTOBOTTOMRIGHT, [this]() {
+        Dimension sz = GetSize(d_);
+        scrollPane_.Position(Point(sz.w, sz.h));
+      });
+
+      d_.On(Command, ID_SCROLLTOTOPLEFT, [this]() {
+        scrollPane_.Position(Point(0,0));
       });
     }
 
