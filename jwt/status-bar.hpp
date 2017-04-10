@@ -30,6 +30,7 @@ namespace jwt {
     : Window
   {
     StatusBar(Window& parent);
+    StatusBar(Window& parent, const std::initializer_list<int>&);
     StatusBar(Dialog& parent, int buttonId);
 
   protected:
@@ -42,4 +43,21 @@ namespace jwt {
   private:
   };
 
+  StatusBar& SetParts(StatusBar& s, const std::initializer_list<int>&);
+
+  template<typename InputIterator>
+  StatusBar& SetParts(StatusBar& s, InputIterator first, InputIterator last) {
+    assert(s.TheHWND());
+
+    std::vector<int> parts(first, last);
+    assert(parts.size() > 0 && parts.size() <= 256);
+
+    SendMessage(s.TheHWND(), SB_SETPARTS, parts.size(), (LPARAM) &*parts.begin());
+
+    return s;
+  }
+
+  StatusBar& SetText(StatusBar&, int part, const std::wstring&);
+
+  std::wstring GetText(StatusBar&, int part);
 }

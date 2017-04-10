@@ -6,6 +6,8 @@
 #include "edit-tests.hpp"
 #include "list-tests.hpp"
 #include "scroll-pane-tests.hpp"
+#include "status-bar-tests.hpp"
+#include "track-bar-tests.hpp"
 
 #include <iostream>
 #include <memory>
@@ -21,6 +23,8 @@ int Start() {
   d.On(Command, IDC_EDITTESTS, ShowEditTests);
   d.On(Command, IDC_LISTTESTS, ShowListTests);
   d.On(Command, IDC_SCROLLPANETESTS, ShowScrollPaneTests);
+  d.On(Command, IDC_STATUSBARTESTS, ShowStatusBarTests);
+  d.On(Command, IDC_TRACKANDPROGRESSTESTS, ShowTrackBarTests);
 
   SetVisible(d, true);
 

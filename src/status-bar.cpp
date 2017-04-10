@@ -27,9 +27,16 @@ namespace jwt {
     Create(parent);
   }
 
+  StatusBar::StatusBar(Window& parent, const std::initializer_list<int>& parts) {
+    Create(parent);
+    SetParts(*this, parts);
+  }
+
   StatusBar::StatusBar(Dialog& parent, int statusbarId) {
     hWnd_ = parent.Item(statusbarId);
+    
     assert(hWnd_ != nullptr);
+    assert(ClassName(*this) == STATUSCLASSNAME);
 
     SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
@@ -56,5 +63,46 @@ namespace jwt {
 
     return 0;
   }
+
+  //
+  // Non-member statusbar functions
+  //
+
+  StatusBar& SetParts(StatusBar& s, const std::initializer_list<int>& l) {
+    assert(s.TheHWND());
+    assert(l.size() > 0 && l.size() <= 256);
+
+    std::vector<int> parts(l);
+    SendMessage(s.TheHWND(), SB_SETPARTS, parts.size(), (LPARAM) &*parts.begin());
+
+    return s;
+  }
+
+  StatusBar& SetText(StatusBar& s, int part, const std::wstring& txt) {
+    assert(s.TheHWND());
+    assert(part >= 0 && part <= 255);
+
+    SendMessage(s.TheHWND(), SB_SETTEXT, MAKEWORD(part, 0), (LPARAM) txt.c_str());
+
+    return s;
+  }
+
+  std::wstring GetText(StatusBar& s, int part) {
+    assert(s.TheHWND());
+    assert(part >= 0 && part <= 255);
+
+    int length = LOWORD(SendMessage(s.TheHWND(), SB_GETTEXTLENGTH, part, 0));
+    if (length < 1) {
+      return L"";
+    }
+
+    std::wstring txt(length, ' ');
+    SendMessage(s.TheHWND(), SB_GETTEXT, part, (LPARAM) &*txt.begin());
+
+    txt.resize(txt.size() - 1);
+
+    return txt;
+  }
+
 
 } // namespace jwt

@@ -102,6 +102,18 @@
     <ClInclude Include="..\..\tests\scroll-pane-tests.hpp">
       <Filter>Header Files\tests</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\tests\status-bar-tests.hpp">
+      <Filter>Header Files\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\progress-bar.hpp">
+      <Filter>Header Files\jwt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jwt\track-bar.hpp">
+      <Filter>Header Files\jwt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\track-bar-tests.hpp">
+      <Filter>Header Files\tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\window.cpp">
@@ -159,6 +171,18 @@
       <Filter>Source Files\tests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tests\scroll-pane-tests.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\status-bar-tests.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\progress-bar.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\track-bar.cpp">
+      <Filter>Source Files\jwt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\track-bar-tests.cpp">
       <Filter>Source Files\tests</Filter>
     </ClCompile>
   </ItemGroup>

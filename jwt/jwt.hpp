@@ -43,3 +43,5 @@
 #include "scroll-pane.hpp"
 #include "status-bar.hpp"
 #include "toolbar.hpp"
+#include "track-bar.hpp"
+#include "progress-bar.hpp"

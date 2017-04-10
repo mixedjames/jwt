@@ -35,7 +35,10 @@ namespace jwt {
 
   ListBox::ListBox(Dialog& parent, int listId) {
     hWnd_ = parent.Item(listId);
+
     assert(hWnd_ != nullptr);
+    assert(ClassName(*this) == L"ListBox");
+
 
     SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
   }
@@ -45,7 +48,7 @@ namespace jwt {
 
   void ListBox::Create(Window& parent) {
     hWnd_ = CreateWindow(
-      L"LISTBOX", L"", WS_VISIBLE | WS_CHILD,
+      L"ListBox", L"", WS_VISIBLE | WS_CHILD,
       0, 0, CW_USEDEFAULT, CW_USEDEFAULT,
       parent.TheHWND(), nullptr, nullptr, nullptr
     );

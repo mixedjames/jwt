@@ -170,16 +170,20 @@
     <ClInclude Include="..\..\jwt\list-box.hpp" />
     <ClInclude Include="..\..\jwt\measurement.hpp" />
     <ClInclude Include="..\..\jwt\message-pump.hpp" />
+    <ClInclude Include="..\..\jwt\progress-bar.hpp" />
     <ClInclude Include="..\..\jwt\rebar.hpp" />
     <ClInclude Include="..\..\jwt\scroll-pane.hpp" />
     <ClInclude Include="..\..\jwt\status-bar.hpp" />
     <ClInclude Include="..\..\jwt\toolbar.hpp" />
+    <ClInclude Include="..\..\jwt\track-bar.hpp" />
     <ClInclude Include="..\..\jwt\window-impl.hpp" />
     <ClInclude Include="..\..\jwt\window.hpp" />
     <ClInclude Include="..\..\tests\button-tests.hpp" />
     <ClInclude Include="..\..\tests\edit-tests.hpp" />
     <ClInclude Include="..\..\tests\list-tests.hpp" />
     <ClInclude Include="..\..\tests\scroll-pane-tests.hpp" />
+    <ClInclude Include="..\..\tests\status-bar-tests.hpp" />
+    <ClInclude Include="..\..\tests\track-bar-tests.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -192,16 +196,20 @@
     <ClCompile Include="..\..\src\libraries.cpp" />
     <ClCompile Include="..\..\src\list-box.cpp" />
     <ClCompile Include="..\..\src\message-pump.cpp" />
+    <ClCompile Include="..\..\src\progress-bar.cpp" />
     <ClCompile Include="..\..\src\rebar.cpp" />
     <ClCompile Include="..\..\src\scroll-pane.cpp" />
     <ClCompile Include="..\..\src\status-bar.cpp" />
     <ClCompile Include="..\..\src\toolbar.cpp" />
+    <ClCompile Include="..\..\src\track-bar.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\tests\button-test.cpp" />
     <ClCompile Include="..\..\tests\edit-tests.cpp" />
     <ClCompile Include="..\..\tests\list-tests.cpp" />
     <ClCompile Include="..\..\tests\main.cpp" />
     <ClCompile Include="..\..\tests\scroll-pane-tests.cpp" />
+    <ClCompile Include="..\..\tests\status-bar-tests.cpp" />
+    <ClCompile Include="..\..\tests\track-bar-tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

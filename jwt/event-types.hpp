@@ -51,4 +51,8 @@ namespace jwt {
   struct SecondaryActionTag {
   };
   extern const SecondaryActionTag SecondaryAction;
+
+  struct ChangeTag {
+  };
+  extern const ChangeTag Change;
 }

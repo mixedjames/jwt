@@ -35,6 +35,7 @@ namespace jwt {
 
   Edit::Edit(Dialog& parent, int editId) {
     hWnd_ = parent.Item(editId);
+    
     assert(hWnd_ != nullptr);
     assert(ClassName(*this) == L"Edit");
 

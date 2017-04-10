@@ -28,6 +28,8 @@
 #include <vector>
 #include <exception>
 #include <algorithm>
+#include <initializer_list>
+
 #include <Windows.h>
 #include <CommCtrl.h>
 #include <boost/signals2.hpp>

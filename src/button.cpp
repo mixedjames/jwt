@@ -41,7 +41,6 @@ namespace jwt {
     hWnd_ = parent.Item(buttonId);
     
     assert(hWnd_ != nullptr);
-    auto s = ClassName(*this);
     assert(ClassName(*this) == L"Button");
 
     SetWindowLongPtr(hWnd_, GWLP_USERDATA, (LONG_PTR) this);
